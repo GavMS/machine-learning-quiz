@@ -117,7 +117,13 @@ function finishQuiz() {
 
 function saveScore(mode, percentage) {
     let history = JSON.parse(localStorage.getItem('ml_quiz_history') || '[]');
-    history.push({ mode: mode, score: percentage, date: new Date().toLocaleDateString() });
+    history.push({
+        mode: mode,
+        score: percentage,
+        date: new Date().toLocaleDateString(),
+        questions: quizData,
+        answers: userAnswers.slice()
+    });
     localStorage.setItem('ml_quiz_history', JSON.stringify(history));
     loadHistory();
 }
@@ -132,15 +138,54 @@ function loadHistory() {
         return;
     }
 
-    history.slice().reverse().slice(0, 5).forEach(h => {
+    const reversed = history.slice().reverse().slice(0, 5);
+    reversed.forEach((h, idx) => {
+        const realIdx = history.length - 1 - idx;
         const badgeClass = h.mode === 'easy' ? 'badge-easy' : 'badge-hard';
-        list.innerHTML += '<li class="flex justify-between items-center"><span class="badge ' + badgeClass + ' text-xs">' + h.mode.toUpperCase() + '</span><span class="text-[#1a1a2e] font-bold text-sm">' + h.score + '%</span><span class="text-slate-400 text-xs">' + h.date + '</span></li>';
+        const hasDetail = h.questions && h.answers;
+        const clickAttr = hasDetail ? ' onclick="reviewHistory(' + realIdx + ')" style="cursor:pointer"' : '';
+        const hoverClass = hasDetail ? ' hover:bg-[#f0f2f5] rounded-lg px-2 -mx-2 transition-colors' : '';
+        list.innerHTML += '<li class="flex justify-between items-center' + hoverClass + '"' + clickAttr + '><span class="badge ' + badgeClass + ' text-xs">' + h.mode.toUpperCase() + '</span><span class="text-[#1a1a2e] font-bold text-sm">' + h.score + '%</span><span class="text-slate-400 text-xs">' + h.date + '</span></li>';
     });
 }
 
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+}
+
+function reviewHistory(index) {
+    let history = JSON.parse(localStorage.getItem('ml_quiz_history') || '[]');
+    const entry = history[index];
+    if (!entry || !entry.questions || !entry.answers) return;
+
+    let score = 0;
+    let explHTML = '';
+
+    entry.questions.forEach((q, i) => {
+        const isCorrect = entry.answers[i] === q.answer;
+        if (isCorrect) score++;
+
+        let html = '<div class="mb-4 pb-4 border-b border-[#e9ecef] last:border-0">';
+        html += '<p class="font-semibold text-sm ' + (isCorrect ? 'result-correct' : 'result-wrong') + ' mb-1">Q' + (i + 1) + ': ' + q.question + '</p>';
+        if (q.image) {
+            html += '<img src="' + q.image + '" alt="Gambar soal ' + (i + 1) + '" class="w-full rounded-lg border border-[#e2e5ea] my-2 cursor-pointer hover:opacity-90 transition-opacity" onclick="openImageModal(this.src)">';
+        }
+        html += '<p class="text-xs text-slate-500 mb-1">Jawaban Anda: <strong class="text-[#1a1a2e]">' + (entry.answers[i] ? q.options[entry.answers[i]] : '-') + '</strong></p>';
+        if (!isCorrect) {
+            html += '<p class="text-xs mb-1"><span class="text-slate-500">Jawaban Benar:</span> <strong class="result-correct">' + q.options[q.answer] + '</strong></p>';
+        }
+        html += '<div class="explanation-box mt-2">' + q.explanation + '</div>';
+        html += '</div>';
+        explHTML += html;
+    });
+
+    const percentage = Math.round((score / entry.questions.length) * 100);
+
+    showScreen('results-screen');
+    document.getElementById('final-score-text').innerText = percentage + '%';
+    setTimeout(() => { document.getElementById('final-progress-bar').style.width = percentage + '%'; }, 100);
+    document.getElementById('explanations-container').innerHTML = explHTML;
 }
 
 function resetQuiz() {
