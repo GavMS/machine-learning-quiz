@@ -4,120 +4,120 @@
     "question": "Sebuah dataset memiliki fitur median_income (range 0–15) dan total_rooms (range 100–40,000). Model Linear Regression dilatih tanpa scaling. Apa yang paling mungkin terjadi?",
     "options": {
       "A": "Model gagal dilatih karena Scikit-learn tidak bisa memproses fitur dengan rentang nilai yang sangat berbeda secara bersamaan.",
-      "B": "Model berhasil dilatih, namun bobot untuk total_rooms dikompensasi sangat kecil sehingga median_income mendominasi prediksi secara tidak proporsional.",
-      "C": "Model berhasil dilatih, namun gradient descent akan memberikan pembaruan bobot yang jauh lebih besar pada total_rooms, sehingga median_income relatif diabaikan.",
+      "B": "Model berhasil dilatih dengan performa optimal karena Linear Regression tidak bergantung pada skala fitur input.",
+      "C": "Model berhasil dilatih, namun gradient descent memberikan pembaruan bobot jauh lebih besar pada total_rooms sehingga median_income relatif diabaikan.",
       "D": "Model menghasilkan performa identik karena Linear Regression secara internal melakukan normalisasi sebelum menghitung bobot setiap fitur."
     },
     "answer": "C",
-    "explanation": "Tanpa scaling, fitur dengan nilai besar (total_rooms hingga 40,000) menghasilkan gradient yang jauh lebih besar dibanding median_income (0–15). Gradient descent memperbarui bobot total_rooms lebih agresif → model bias, tidak stabil, dan konvergensi lambat."
+    "explanation": "Tanpa scaling, fitur dengan nilai besar (total_rooms hingga 40,000) menghasilkan gradient jauh lebih besar dibanding median_income (0–15). Gradient descent memperbarui bobot total_rooms lebih agresif → model bias, tidak stabil, konvergensi lambat."
   },
   {
     "id": 2,
-    "question": "Seorang data scientist menjalankan housing.info() dan mendapati total_bedrooms memiliki 16,344 non-null dari 16,512 total entries. Manakah langkah preprocessing yang paling tepat untuk menangani ini?",
-    "image": "img/gambar_housing_info.png",
+    "question": "Seorang mahasiswa membuat dua fitur rasio baru: rooms_per_household dan population_per_household, lalu menghapus fitur asli total_rooms dan population. Apa risiko utama dari keputusan ini?",
     "options": {
-      "A": "Hapus seluruh kolom total_bedrooms karena data tidak lengkap dan keberadaannya justru akan mengganggu proses training model.",
-      "B": "Isi missing values dengan nilai 0 karena distrik yang tidak memiliki data kemungkinan besar tidak memiliki kamar tidur sama sekali.",
-      "C": "Gunakan SimpleImputer dengan strategy='median' agar missing values diisi dengan nilai tengah yang robust terhadap outlier.",
-      "D": "Biarkan saja karena sebagian besar algoritma modern seperti Random Forest secara otomatis menangani missing values tanpa perlu preprocessing."
+      "A": "Tidak ada risiko — fitur rasio selalu lebih unggul dan fitur mentah tidak memberikan informasi tambahan apapun.",
+      "B": "Model akan gagal dilatih karena Scikit-learn membutuhkan fitur asli sebagai referensi untuk menghitung rasio.",
+      "C": "Fitur rasio dan fitur mentah bisa saling melengkapi — menghapus fitur asli berisiko menghilangkan sinyal yang belum tertangkap rasio.",
+      "D": "Dimensi dataset berkurang sehingga model pasti mengalami underfitting karena informasi yang tersedia tidak mencukupi."
     },
     "answer": "C",
-    "explanation": "Median lebih robust dibanding mean karena tidak terpengaruh outlier ekstrem. Mengisi dengan 0 salah secara semantik. Menghapus kolom membuang informasi penting. Random Forest di Scikit-learn tidak secara otomatis handle missing values."
+    "explanation": "Rasio menangkap proporsi dan kepadatan, mengurangi efek skala populasi. Namun fitur mentah bisa menyimpan sinyal berbeda yang belum terwakili oleh rasio. Menghapusnya berisiko — keduanya bisa saling melengkapi dan membantu model menangkap pola non-linear."
   },
   {
     "id": 3,
-    "question": "Dua distrik memiliki data berikut — Distrik A: total_rooms=500, households=100 dan Distrik B: total_rooms=5,000, households=1,000. Nilai rooms_per_household keduanya adalah 5. Apa kesimpulan yang paling tepat?",
+    "question": "Mahasiswa A melakukan preprocessing secara manual: impute → scale → encode, tanpa pipeline. Mahasiswa B menggunakan Pipeline Scikit-learn. Pada saat evaluasi menggunakan GridSearchCV, apa keunggulan signifikan pendekatan Mahasiswa B?",
     "options": {
-      "A": "Fitur rasio tidak berguna di sini karena menghasilkan nilai yang identik untuk dua distrik yang memiliki ukuran populasi sangat berbeda.",
-      "B": "Distrik B memiliki kondisi perumahan yang jauh lebih baik karena secara absolut memiliki jumlah kamar yang lebih banyak.",
-      "C": "Kedua distrik memiliki kepadatan ruang per household yang identik — ini justru menunjukkan kekuatan fitur rasio dalam menghilangkan bias akibat perbedaan skala populasi.",
-      "D": "Fitur rasio harus selalu dikombinasikan dengan nilai total_rooms mentah agar dapat menghasilkan informasi yang benar-benar bermakna."
+      "A": "Pipeline Mahasiswa B otomatis memilih algoritma terbaik sehingga tidak perlu mendefinisikan model secara eksplisit.",
+      "B": "Pipeline Mahasiswa B memastikan setiap fold CV mendapat transformasi yang di-fit secara independen — menghindari data leakage antar fold.",
+      "C": "Pipeline Mahasiswa B menjalankan lebih banyak kombinasi hyperparameter dalam waktu lebih singkat dibanding cara manual.",
+      "D": "Pipeline Mahasiswa B secara otomatis menghasilkan fitur rasio baru di setiap fold tanpa konfigurasi tambahan apapun."
     },
-    "answer": "C",
-    "explanation": "Ini kekuatan fitur rasio — meskipun total_rooms sangat berbeda (500 vs 5,000), kepadatan per household sama (5). Model yang menggunakan total_rooms mentah akan memperlakukan Distrik B sebagai 'lebih baik' padahal kondisi per rumah tangga identik."
+    "answer": "B",
+    "explanation": "Tanpa pipeline, scaler di-fit sekali pada semua training data sebelum CV dimulai — statistik bocor antar fold. Dengan Pipeline, fit transformasi dilakukan di dalam setiap fold CV secara independen, sehingga benar-benar menghindari data leakage dan hasil evaluasi lebih valid."
   },
   {
     "id": 4,
-    "question": "Fitur total_rooms memiliki distribusi right-skewed ekstrem — sebagian besar distrik 1,000–3,000 namun beberapa mencapai 40,000. Seorang mahasiswa langsung menerapkan StandardScaler tanpa log transform. Apa dampaknya?",
+    "question": "GridSearchCV dijalankan dua kali: pertama dengan param_grid yang memiliki 3×3×4 kombinasi dan cv=5, kedua dengan RandomizedSearchCV n_iter=20 dan cv=5 pada ruang parameter yang sama. Berapa total model yang dilatih masing-masing?",
     "options": {
-      "A": "Tidak ada dampak berarti karena StandardScaler memang dirancang khusus untuk menangani distribusi apapun termasuk yang sangat skewed.",
-      "B": "Mean dan std sangat dipengaruhi outlier 40,000 — hasil scaling tidak representatif dan sebagian besar nilai terkompresi di sekitar −0.1 hingga 0.1.",
-      "C": "StandardScaler akan otomatis mendeteksi skewness dan secara internal menerapkan log transform sebelum proses standarisasi dijalankan.",
-      "D": "Dampaknya sangat minimal karena setelah proses scaling selesai, semua nilai tetap berada dalam range yang wajar dan aman untuk model."
+      "A": "GridSearch: 36 model; RandomizedSearch: 20 model — keduanya tidak mempertimbangkan jumlah fold CV.",
+      "B": "GridSearch: 36 model; RandomizedSearch: 100 model — RandomizedSearch selalu melatih lebih banyak model.",
+      "C": "GridSearch: 180 model; RandomizedSearch: 100 model — keduanya mengalikan kombinasi dengan jumlah fold CV.",
+      "D": "GridSearch: 180 model; RandomizedSearch: 36 model — GridSearch lebih efisien karena kombinasinya terstruktur."
     },
-    "answer": "B",
-    "explanation": "Outlier 40,000 menarik mean ke atas dan memperbesar std secara drastis. Hasilnya: nilai 'normal' (1,000–3,000) setelah scaling akan sangat terkompresi mendekati nol, sementara outlier tetap jauh. Log transform sebelum scaling mencegah ini."
+    "answer": "C",
+    "explanation": "GridSearch: 3×3×4 = 36 kombinasi × 5 fold = 180 model. RandomizedSearch: 20 kombinasi × 5 fold = 100 model. Keduanya mengalikan jumlah kombinasi dengan cv karena setiap kombinasi dievaluasi sebanyak jumlah fold."
   },
   {
     "id": 5,
-    "question": "Seorang mahasiswa melakukan pipeline preprocessing manual: fit scaler pada X_train, transform X_train, lalu transform X_test. Ia kemudian menyadari bahwa ia juga memasukkan X_test ke dalam fit scaler di awal. Apa konsekuensi dari kesalahan ini?",
+    "question": "Jika RMSE model turun dari 52,000 menjadi 47,000 setelah menambah tiga fitur rasio baru, langkah berikutnya yang paling tepat untuk menurunkan RMSE lebih lanjut tanpa mengganti algoritma adalah?",
     "options": {
-      "A": "Tidak ada konsekuensi yang signifikan karena perbedaan nilai mean dan std antara train dan test set pada umumnya sangat kecil.",
-      "B": "Model akan mengalami underfitting yang serius karena keikutsertaan test data telah mempengaruhi parameter scaler secara negatif.",
-      "C": "Terjadi data leakage: statistik test set bocor ke training — evaluasi menjadi terlalu optimis dan tidak mencerminkan performa model di dunia nyata.",
-      "D": "Model akan mengalami overfitting pada training set karena scaler yang di-fit pada lebih banyak data justru menghasilkan transformasi yang terlalu presisi."
+      "A": "Mengganti semua fitur rasio dengan fitur aslinya karena penurunan RMSE membuktikan fitur lama lebih baik.",
+      "B": "Mengurangi fold CV dari 3 menjadi 2 agar GridSearch bisa mencoba lebih banyak kombinasi dalam waktu singkat.",
+      "C": "Memperluas range hyperparameter di GridSearch, menambah data training, dan melakukan EDA ulang untuk menemukan pola baru.",
+      "D": "Langsung mengganti algoritma ke Neural Network karena RMSE $47,000 menandakan Random Forest sudah mencapai batas kemampuannya."
     },
     "answer": "C",
-    "explanation": "Ini adalah data leakage klasik. Ketika scaler di-fit pada train+test, mean dan std mencerminkan distribusi gabungan — informasi test set bocor ke training. Akibatnya evaluasi pada test set terlalu optimis, dan model tampak lebih baik dari sebenarnya."
+    "explanation": "Langkah valid tanpa ganti algoritma: memperluas range hyperparameter, menambah data training, melakukan feature selection, menangani outlier lebih baik, mencoba teknik scaling berbeda, dan menambah fold CV. Mengganti algoritma prematur; mengurangi fold CV justru membuat evaluasi kurang reliable."
   },
   {
     "id": 6,
-    "question": "GridSearchCV dijalankan dengan param_grid = {'n_estimators': [50, 100, 200], 'max_depth': [5, 10, None], 'max_features': [4, 6, 8, 10]} dan cv=3. Berapa total model yang dilatih?",
+    "question": "Seorang mahasiswa melakukan EDA dan menemukan: (1) ocean_proximity bertipe object, (2) total_bedrooms ada missing values, (3) median_house_value terpotong di 500,001. Urutan penanganan yang paling logis sebelum training adalah?",
     "options": {
-      "A": "10 model, dihitung dari penjumlahan semua nilai kandidat tiap parameter yaitu 3 + 3 + 4 tanpa mempertimbangkan fold.",
-      "B": "36 model, dihitung dari perkalian semua kombinasi yaitu 3 × 3 × 4 namun belum memperhitungkan jumlah fold CV.",
-      "C": "108 model, dihitung dari 3 × 3 × 4 kombinasi parameter dikalikan dengan 3 fold cross-validation.",
-      "D": "12 model, dihitung dari 3 fold dikalikan 4 parameter karena GridSearch tidak mengevaluasi seluruh kombinasi yang ada."
+      "A": "Encode ocean_proximity → hapus baris missing → training langsung tanpa perlu menangani nilai terpotong.",
+      "B": "Impute missing values → encode fitur kategorik → pertimbangkan filter atau transformasi nilai terpotong → scaling.",
+      "C": "Scaling semua fitur numerik terlebih dahulu → encode kategorik → lalu tangani missing values di akhir pipeline.",
+      "D": "Hapus semua baris yang memiliki anomali apapun terlebih dahulu, baru lakukan encoding dan scaling sekaligus."
     },
-    "answer": "C",
-    "explanation": "GridSearch exhaustively mencoba semua kombinasi: 3 × 3 × 4 = 36 kombinasi. Setiap kombinasi dievaluasi dengan 3-fold CV → 36 × 3 = 108 total training. Ini mengapa ruang parameter yang besar membuat GridSearch sangat lambat."
+    "answer": "B",
+    "explanation": "EDA yang baik memberikan arah preprocessing: missing values perlu ditangani sebelum training, fitur kategorik perlu di-encode, dan nilai terpotong (capped) perlu dipertimbangkan karena bisa mempengaruhi distribusi target. Urutan dalam pipeline juga penting untuk menghindari data leakage."
   },
   {
     "id": 7,
-    "question": "Dua model dievaluasi dengan 3-fold cross-validation. Model A: scores [48,000, 51,000, 49,000] dan Model B: scores [35,000, 62,000, 43,000] (RMSE dalam USD). Model mana yang sebaiknya dipilih?",
+    "question": "Tipe data apa saja yang ada dalam atribut (kolom) pada dataset yang digunakan?",
+    "image": "img/gambar_housing_info.png",
     "options": {
-      "A": "Model B, karena memiliki RMSE paling rendah yaitu 35,000 di salah satu fold yang menunjukkan potensi performa terbaiknya.",
-      "B": "Model A, karena memiliki nilai rata-rata RMSE yang lebih rendah yaitu 49,333 dibanding Model B sehingga secara keseluruhan lebih akurat.",
-      "C": "Model A, karena varians Model B sangat tinggi (35k–62k) meskipun rata-ratanya sedikit lebih baik — model tidak stabil dan tidak dapat diandalkan.",
-      "D": "Keduanya dianggap setara karena selisih rata-rata hanya sebesar $2,667 dan perbedaan ini tidak signifikan secara statistik."
+      "A": "Semua kolom bertipe int64 karena dataset perumahan hanya menyimpan nilai bilangan bulat tanpa angka desimal.",
+      "B": "Terdapat campuran int64 dan object karena beberapa kolom koordinat disimpan sebagai bilangan bulat.",
+      "C": "Semua kolom bertipe float64 karena tidak ada kolom yang menyimpan data bertipe kategorik dalam dataset ini.",
+      "D": "Terdapat dua tipe data yaitu float64 untuk delapan kolom numerik dan object untuk satu kolom kategorik."
     },
-    "answer": "C",
-    "explanation": "Rata-rata Model B (46,667) memang lebih kecil, tetapi rentangnya ekstrem (35k–62k). Model A jauh lebih stabil (48k–51k). Dalam praktik, model yang konsisten lebih dapat diandalkan daripada model dengan rata-rata sedikit lebih baik tapi sangat tidak stabil."
+    "answer": "D",
+    "explanation": "Dari housing.info(), 8 kolom bertipe float64 (longitude, latitude, housing_median_age, total_rooms, total_bedrooms, population, households, median_income) dan 1 kolom bertipe object yaitu ocean_proximity (kategorik)."
   },
   {
     "id": 8,
-    "question": "Hasil GridSearchCV menunjukkan best_score_ = -47,523.4 dan best_params_ = {'max_depth': 10, 'n_estimators': 200}. Interpretasi mana yang paling tepat?",
+    "question": "Fitur total_rooms memiliki distribusi right-skewed ekstrem dengan beberapa nilai mencapai 40,000. Mahasiswa langsung menerapkan StandardScaler tanpa log transform terlebih dahulu. Apa dampak paling signifikan?",
     "options": {
-      "A": "Model terbaik menghasilkan prediksi rata-rata $47,523 di bawah nilai aktual, yang menandakan bahwa model ini cenderung underestimate secara konsisten.",
-      "B": "Telah terjadi error serius dalam GridSearch karena nilai skor yang valid tidak mungkin bernilai negatif — konfigurasi scoring perlu dicek ulang.",
-      "C": "RMSE terbaik yang ditemukan adalah sekitar $47,523 menggunakan max_depth=10 dan n_estimators=200; nilai negatif karena konvensi Scikit-learn untuk error metrics.",
-      "D": "Model dengan parameter tersebut menghasilkan akurasi sebesar −47,523% yang berarti kualitas prediksinya lebih buruk dari tebakan acak."
+      "A": "Tidak ada dampak berarti karena StandardScaler dirancang untuk menangani distribusi apapun termasuk yang sangat skewed.",
+      "B": "Mean dan std yang dihitung sangat dipengaruhi outlier 40,000 — hasil scaling tidak representatif dan sebagian besar nilai terkompresi mendekati nol.",
+      "C": "StandardScaler otomatis mendeteksi skewness dan menerapkan log transform secara internal sebelum standarisasi dijalankan.",
+      "D": "Dampaknya minimal karena setelah scaling, semua nilai tetap berada dalam range yang wajar dan aman untuk digunakan model."
     },
-    "answer": "C",
-    "explanation": "neg_RMSE = −RMSE, jadi best_score_ = −47,523.4 berarti RMSE terbaik ≈ $47,523. GridSearch memaksimalkan −47,523 (lebih besar dari −50,000 misalnya), yang ekuivalen dengan meminimalkan RMSE. Parameter best adalah max_depth=10, n_estimators=200."
+    "answer": "B",
+    "explanation": "Outlier 40,000 menarik mean ke atas dan memperbesar std secara drastis — distribusi yang skewed menyebabkan hal ini. Nilai normal (1,000–3,000) setelah scaling akan terkompresi mendekati nol. Log transform sebelum scaling menstabilkan varians dan mengurangi pengaruh outlier ekstrem."
   },
   {
     "id": 9,
-    "question": "Setelah menambah fitur rooms_per_household, bedrooms_per_room, dan population_per_household, RMSE turun dari 52,000 menjadi 47,000. Tim mempertimbangkan langkah berikut untuk menurunkan RMSE lebih lanjut. Mana yang paling tepat?",
+    "question": "Dua model dievaluasi dengan 3-fold CV. Model A: RMSE scores [48,000, 51,000, 49,000]. Model B: RMSE scores [35,000, 62,000, 43,000]. Model mana yang sebaiknya dipilih dan mengapa?",
     "options": {
-      "A": "Hapus fitur asli seperti total_rooms, total_bedrooms, dan population karena sudah terwakili oleh fitur rasio sehingga dimensi dapat dikurangi.",
-      "B": "Perluas range hyperparameter di GridSearch dan tambah jumlah data training, lalu lakukan EDA ulang untuk menemukan pola baru yang mungkin terlewat.",
-      "C": "Ganti algoritma dari Random Forest ke Neural Network karena nilai RMSE $47,000 menunjukkan model saat ini sudah mencapai batas kemampuan maksimalnya.",
-      "D": "Kurangi jumlah fold cross-validation dari 3 menjadi 2 fold agar GridSearch dapat mencoba lebih banyak kombinasi parameter dalam waktu yang sama."
+      "A": "Model B, karena memiliki RMSE minimum 35,000 di satu fold yang membuktikan potensi performa terbaiknya.",
+      "B": "Model B, karena rata-rata RMSE-nya (46,667) lebih rendah dari Model A (49,333) sehingga secara statistik lebih unggul.",
+      "C": "Model A, karena varians Model B sangat tinggi (rentang 35k–62k) menandakan model tidak stabil meski rata-ratanya sedikit lebih baik.",
+      "D": "Keduanya setara — selisih rata-rata hanya $2,667 dan tidak cukup signifikan untuk menjadi dasar keputusan pemilihan model."
     },
-    "answer": "B",
-    "explanation": "Memperluas hyperparameter search dan menambah data adalah langkah valid tanpa ganti algoritma. Menghapus fitur asli berisiko — fitur mentah dan rasio bisa saling melengkapi. Mengurangi fold CV justru membuat evaluasi kurang reliable, bukan lebih banyak kombinasi yang dicoba."
+    "answer": "C",
+    "explanation": "Rata-rata Model B (46,667) memang lebih kecil, tapi rentangnya ekstrem (35k–62k). Model A jauh lebih stabil (48k–51k). CV yang baik memberikan estimasi performa stabil — satu split bisa bias atau kebetulan. Model konsisten lebih dapat diandalkan di dunia nyata."
   },
   {
     "id": 10,
-    "question": "Pernyataan mana yang paling tepat menggambarkan perbedaan antara GridSearchCV dan RandomizedSearchCV dalam skenario hyperparameter tuning dengan 5 parameter, masing-masing memiliki 10 nilai kandidat?",
+    "question": "Hasil GridSearchCV menunjukkan best_score_ = -47,523.4 dan best_params_ = {'max_depth': 10, 'n_estimators': 200}. Interpretasi dan implikasi praktis yang paling tepat adalah?",
     "options": {
-      "A": "GridSearchCV lebih cocok digunakan karena selalu menemukan kombinasi parameter terbaik secara pasti, sementara RandomizedSearchCV hanya cocok untuk dataset berukuran kecil.",
-      "B": "GridSearchCV akan menjalankan 50 kombinasi dari hasil 5 × 10, sedangkan RandomizedSearchCV menjalankan jumlah n_iter yang ditentukan dengan strategi pencarian yang sebenarnya identik.",
-      "C": "GridSearchCV akan menjalankan 100,000 kombinasi (10⁵), menjadikannya tidak praktis; RandomizedSearchCV dengan n_iter=50 hanya menjalankan 50 kombinasi sambil mengeksplorasi ruang parameter yang jauh lebih luas.",
-      "D": "RandomizedSearchCV selalu menghasilkan model yang lebih superior karena strategi eksplorasi acaknya berhasil menghindari local optima yang sering ditemui oleh GridSearchCV."
+      "A": "Model cenderung underestimate rata-rata $47,523 — nilai negatif menunjukkan model selalu memprediksi di bawah harga aktual.",
+      "B": "Terjadi error konfigurasi GridSearch karena skor evaluasi yang valid tidak mungkin bernilai negatif dalam kondisi normal.",
+      "C": "RMSE terbaik adalah ~$47,523 dengan max_depth=10, n_estimators=200; nilai negatif adalah konvensi neg_RMSE Scikit-learn karena framework selalu memaksimalkan skor.",
+      "D": "Model menghasilkan akurasi −47,523% yang berarti prediksinya jauh lebih buruk dibandingkan model baseline acak sederhana."
     },
     "answer": "C",
-    "explanation": "Dengan 5 parameter × 10 nilai, GridSearch harus mencoba 10⁵ = 100,000 kombinasi — tidak praktis. RandomizedSearchCV dengan n_iter=50 hanya 50 kombinasi, namun karena mengambil sampel dari seluruh ruang (bukan grid tetap), sering menemukan kombinasi yang hampir optimal dengan biaya jauh lebih kecil."
+    "explanation": "Scikit-learn selalu memaksimalkan skor. neg_RMSE = −RMSE, sehingga best_score_ = −47,523.4 berarti RMSE terbaik ≈ $47,523. GridSearch memilih −47,523 (lebih besar dari −50,000), ekuivalen dengan meminimalkan RMSE. Best params: max_depth=10, n_estimators=200."
   }
 ]

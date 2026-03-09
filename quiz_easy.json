@@ -3,83 +3,82 @@
     "id": 1,
     "question": "Apa yang bisa terjadi jika data numerik tidak di-scale terlebih dahulu sebelum training model?",
     "options": {
-      "A": "Model menjadi lebih stabil karena setiap fitur diperlakukan setara tanpa transformasi tambahan.",
-      "B": "Fitur dengan skala besar akan mendominasi proses learning, membuat model bias dan performa menurun.",
-      "C": "Model otomatis melakukan normalisasi secara internal sehingga skala fitur tidak menjadi masalah.",
-      "D": "Tidak ada pengaruh signifikan terhadap performa model karena algoritma sudah mengkompensasi perbedaan skala."
+      "A": "Model menjadi lebih stabil karena setiap fitur diperlakukan setara tanpa transformasi tambahan apapun.",
+      "B": "Proses training akan berjalan lebih cepat karena tidak ada langkah normalisasi yang perlu dieksekusi.",
+      "C": "Fitur dengan skala besar akan mendominasi proses learning sehingga model menjadi bias dan performa menurun.",
+      "D": "Semua fitur secara otomatis dinormalisasi oleh Scikit-learn sebelum proses gradient descent dimulai."
     },
-    "answer": "B",
+    "answer": "C",
     "explanation": "Jika skala fitur berbeda jauh (misalnya income vs latitude), fitur berskala besar akan mendominasi. Tanpa scaling → model bias terhadap fitur tertentu → performa menurun."
   },
   {
     "id": 2,
-    "question": "Mengapa EDA (Exploratory Data Analysis) penting dilakukan sebelum membuat model machine learning?",
+    "question": "Mengapa fitur rasio (seperti rooms_per_household) seringkali lebih informatif dibandingkan fitur mentah (seperti total_rooms)?",
     "options": {
-      "A": "Agar model dapat dilatih lebih cepat dan efisien karena data sudah dioptimalkan untuk proses GPU.",
-      "B": "Untuk memahami karakteristik data, menemukan missing values, dan menentukan transformasi yang diperlukan.",
-      "C": "Untuk secara otomatis membuat fitur rasio baru yang langsung siap digunakan dalam proses training.",
-      "D": "Agar ukuran dataset bertambah secara otomatis sehingga model mendapatkan lebih banyak data latih."
+      "A": "Karena nilai rasio selalu lebih kecil sehingga gradient descent dapat memproses fitur tersebut jauh lebih efisien.",
+      "B": "Karena rasio menangkap proporsi dan kepadatan antar fitur sehingga lebih representatif tanpa dipengaruhi skala populasi.",
+      "C": "Karena fitur mentah seperti total_rooms memiliki terlalu banyak missing values yang mengurangi kualitasnya.",
+      "D": "Karena nilai rasio selalu berada di antara 0 dan 1 sehingga tidak memerlukan proses scaling tambahan sama sekali."
     },
     "answer": "B",
-    "explanation": "EDA membantu memahami struktur dataset, tipe fitur, distribusi, missing values, dan korelasi awal — semua informasi yang dibutuhkan sebelum merancang preprocessing dan memilih algoritma."
+    "explanation": "Fitur mentah tidak selalu merepresentasikan hubungan sebenarnya. total_rooms tidak bermakna tanpa konteks jumlah household. Rasio menangkap kepadatan atau proporsi → lebih representatif, mengurangi efek skala populasi, dan membantu model menangkap pola non-linear secara implisit."
   },
   {
     "id": 3,
-    "question": "Pada dataset housing, kolom total_bedrooms memiliki masalah apa berdasarkan hasil housing.info()?",
-    "image": "img/gambar_housing_info.png",
-    "options": {
-      "A": "Bertipe object sehingga perlu di-encode terlebih dahulu sebelum bisa digunakan model.",
-      "B": "Memiliki nilai negatif yang tidak valid dan perlu dibersihkan sebelum proses training.",
-      "C": "Memiliki missing values karena jumlah non-null lebih sedikit dari total entries.",
-      "D": "Nilainya selalu nol pada sebagian besar baris sehingga tidak memberikan informasi berguna."
-    },
-    "answer": "C",
-    "explanation": "Dari housing.info(), total_bedrooms hanya memiliki 16,344 non-null dari 16,512 entries — artinya terdapat ~168 missing values yang harus ditangani sebelum training."
-  },
-  {
-    "id": 4,
-    "question": "Mengapa fitur rasio (seperti rooms_per_household) seringkali lebih informatif dibandingkan fitur mentah (seperti total_rooms)?",
-    "options": {
-      "A": "Karena nilai numeriknya lebih kecil sehingga gradient descent dapat memproses fitur tersebut lebih efisien.",
-      "B": "Karena rasio menangkap hubungan proporsi antar fitur sehingga lebih representatif tanpa dipengaruhi skala populasi.",
-      "C": "Karena fitur total_rooms memiliki terlalu banyak missing values yang membuat nilainya tidak dapat diandalkan.",
-      "D": "Karena nilai rasio selalu berada di antara 0 dan 1 sehingga tidak memerlukan proses scaling tambahan."
-    },
-    "answer": "B",
-    "explanation": "Fitur mentah total_rooms tidak bermakna tanpa konteks. Dibagi dengan households → rooms_per_household menangkap kepadatan rumah per household, sinyal yang jauh lebih representatif untuk prediksi harga."
-  },
-  {
-    "id": 5,
-    "question": "Mengapa beberapa fitur numerik ditransformasi ke bentuk log sebelum scaling?",
-    "options": {
-      "A": "Karena log transformation mengubah semua nilai positif menjadi negatif sehingga distribusi menjadi lebih seimbang.",
-      "B": "Karena log transformation mengurangi skewness, menstabilkan varians, dan mengurangi pengaruh outlier ekstrem.",
-      "C": "Karena log transformation mengubah tipe data dari float ke integer sehingga memori yang digunakan lebih kecil.",
-      "D": "Karena log transformation secara otomatis menambah jumlah fitur baru dalam dataset yang memperkaya informasi."
-    },
-    "answer": "B",
-    "explanation": "Distribusi yang skewed menyebabkan outlier mendominasi. Log menekan nilai besar dan memperbesar nilai kecil → distribusi lebih simetris, varians lebih stabil, model bekerja lebih baik."
-  },
-  {
-    "id": 6,
     "question": "Mengapa preprocessing sebaiknya dilakukan menggunakan pipeline terstruktur, bukan secara manual satu per satu?",
     "options": {
       "A": "Agar ukuran dataset bertambah secara otomatis dan model mendapat lebih banyak sampel untuk proses training.",
-      "B": "Agar proses training model berjalan lebih cepat karena semua transformasi dieksekusi secara paralel.",
-      "C": "Agar transformasi data konsisten antara training dan testing, dan menghindari data leakage.",
-      "D": "Agar algoritma machine learning yang digunakan dapat berubah secara otomatis sesuai karakteristik data."
+      "B": "Agar proses training model berjalan lebih cepat karena semua transformasi dieksekusi secara paralel sekaligus.",
+      "C": "Agar transformasi data konsisten antara training dan testing, menghindari data leakage, dan workflow lebih reproducible.",
+      "D": "Agar algoritma machine learning yang digunakan dapat berubah secara otomatis sesuai karakteristik data input."
     },
     "answer": "C",
-    "explanation": "Pipeline memastikan semua transformasi (imputation, scaling, encoding) di-fit hanya pada training data lalu diterapkan konsisten ke test data. Ini mencegah data leakage dan menjamin reproducibility."
+    "explanation": "Pipeline menghindari data leakage karena semua transformasi dilakukan di dalamnya. Membuat workflow modular dan reproducible. Memastikan transformasi konsisten antara training dan testing, serta memudahkan integrasi dengan GridSearchCV."
+  },
+  {
+    "id": 4,
+    "question": "Apa perbedaan utama antara Grid Search dan Random Search pada hyperparameter tuning?",
+    "options": {
+      "A": "Grid Search memilih kombinasi parameter secara acak; Random Search mencoba semua kombinasi secara terstruktur.",
+      "B": "Random Search selalu menghasilkan model lebih baik karena eksplorasi acak menghindari local optima di ruang parameter.",
+      "C": "Grid Search mencoba semua kombinasi parameter secara terstruktur; Random Search memilih kombinasi secara acak.",
+      "D": "Tidak ada perbedaan signifikan — keduanya mengeksplorasi ruang parameter dengan jumlah iterasi yang sama persis."
+    },
+    "answer": "C",
+    "explanation": "Random Search: pemilihan nilai parameter dilakukan secara acak. Grid Search: pemilihan nilai parameter dilakukan secara terstruktur oleh programmer yang menentukan semua kombinasi yang akan dicoba."
+  },
+  {
+    "id": 5,
+    "question": "Jika nilai RMSE model masih cukup besar, langkah perbaikan teknis apa yang bisa dilakukan tanpa mengganti algoritma?",
+    "options": {
+      "A": "Menghapus seluruh dataset lama dan mengumpulkan data baru dari sumber yang sama sekali berbeda.",
+      "B": "Menghentikan training lebih awal sebelum konvergen agar model tidak mengalami overfitting pada data latih.",
+      "C": "Mengurangi jumlah data training secara signifikan agar model bisa lebih fokus pada pola yang paling dominan.",
+      "D": "Menambah feature engineering, memperluas range hyperparameter, menambah data training, atau mencoba teknik scaling berbeda."
+    },
+    "answer": "D",
+    "explanation": "Performa dapat diperbaiki dengan: menambah feature engineering, mencoba range hyperparameter lebih luas, menambah jumlah data training, menangani outlier lebih baik, menggunakan scaling atau transformasi berbeda, menambah jumlah fold CV, dan feature selection — semuanya tanpa ganti algoritma."
+  },
+  {
+    "id": 6,
+    "question": "Mengapa EDA (Exploratory Data Analysis) penting dilakukan sebelum membuat model machine learning?",
+    "options": {
+      "A": "Agar model dapat dilatih lebih cepat dan efisien karena data sudah dioptimalkan untuk akselerasi GPU.",
+      "B": "Untuk memahami karakteristik data, menemukan missing values, memahami distribusi, dan menentukan transformasi yang diperlukan.",
+      "C": "Untuk secara otomatis membuat fitur rasio baru yang langsung siap digunakan tanpa proses preprocessing tambahan.",
+      "D": "Agar ukuran dataset bertambah otomatis sehingga model mendapatkan lebih banyak data latih yang bervariasi."
+    },
+    "answer": "B",
+    "explanation": "EDA penting untuk mengetahui karakteristik data (statistik, tipe data, kebutuhan transformasi), memberikan arah algoritma yang cocok. Dalam konteks dataset housing: memahami struktur dataset, mengidentifikasi missing values, memahami distribusi harga rumah, dan menemukan pola awal yang mempengaruhi model."
   },
   {
     "id": 7,
     "question": "Tipe data apa saja yang ada dalam atribut (kolom) pada dataset yang digunakan?",
     "image": "img/gambar_housing_info.png",
     "options": {
-      "A": "Semua kolom bertipe int64 karena dataset perumahan hanya menyimpan data bilangan bulat tanpa desimal.",
+      "A": "Semua kolom bertipe int64 karena dataset perumahan hanya menyimpan nilai bilangan bulat tanpa desimal.",
       "B": "Terdapat campuran tipe int64 dan object karena beberapa kolom numerik disimpan sebagai bilangan bulat.",
-      "C": "Semua kolom bertipe float64 saja karena dataset tidak mengandung kolom dengan tipe data kategorik.",
+      "C": "Semua kolom bertipe float64 karena dataset ini tidak mengandung kolom bertipe data kategorik apapun.",
       "D": "Terdapat dua tipe data yaitu float64 untuk kolom numerik dan object untuk kolom kategorik."
     },
     "answer": "D",
@@ -87,38 +86,38 @@
   },
   {
     "id": 8,
-    "question": "Mengapa menggunakan cross-validation (misalnya 3-fold) dalam GridSearchCV, bukan hanya satu kali split train-test?",
+    "question": "Mengapa beberapa fitur numerik ditransformasi ke bentuk log sebelum scaling?",
     "options": {
-      "A": "Karena cross-validation selalu menghasilkan nilai RMSE yang lebih kecil sehingga model tampak lebih akurat.",
-      "B": "Karena satu kali split bisa menghasilkan evaluasi yang bias atau kebetulan; cross-validation memberikan estimasi yang lebih stabil.",
-      "C": "Karena cross-validation sepenuhnya menghilangkan kebutuhan test set terpisah dalam proses evaluasi akhir.",
-      "D": "Karena cross-validation secara otomatis melakukan feature engineering pada setiap fold selama proses evaluasi."
+      "A": "Karena log transformation mengubah semua nilai positif menjadi negatif sehingga distribusi menjadi lebih seimbang.",
+      "B": "Karena log transformation mengurangi skewness, menstabilkan varians, dan mengurangi pengaruh outlier ekstrem.",
+      "C": "Karena log transformation mengubah tipe data dari float ke integer sehingga memori yang digunakan lebih kecil.",
+      "D": "Karena log transformation secara otomatis menambah jumlah fitur baru yang memperkaya informasi dalam dataset."
     },
     "answer": "B",
-    "explanation": "Satu split mungkin beruntung atau tidak beruntung. k-Fold CV memastikan setiap data pernah menjadi validation set sehingga estimasi performa lebih reliabel dan rendah bias."
+    "explanation": "Log transformation mengurangi skewness, menstabilkan varians, mengurangi pengaruh outlier ekstrem, membuat distribusi lebih mendekati normal, dan membantu model bekerja lebih stabil."
   },
   {
     "id": 9,
-    "question": "GridSearchCV menggunakan scoring='neg_root_mean_squared_error'. Mengapa nilai RMSE dibuat negatif?",
+    "question": "Mengapa menggunakan cross-validation (3-fold) dalam GridSearchCV, bukan hanya satu kali split train-test?",
     "options": {
-      "A": "Karena dalam statistik nilai error memang selalu dinyatakan sebagai bilangan negatif secara konvensional.",
-      "B": "Karena terdapat kesalahan dalam algoritma Scikit-learn yang menyebabkan hasil perhitungan RMSE menjadi negatif.",
-      "C": "Karena Scikit-learn didesain untuk memaksimalkan skor; RMSE adalah error (kecil = baik) sehingga dinegasikan agar bisa dimaksimalkan.",
-      "D": "Karena menggunakan nilai negatif memudahkan proses feature engineering dan interpretasi hasil model secara keseluruhan."
+      "A": "Karena cross-validation selalu menghasilkan nilai RMSE lebih kecil sehingga model tampak lebih akurat dari sebenarnya.",
+      "B": "Karena cross-validation memberikan estimasi performa lebih stabil dan mengurangi risiko bias dari satu split yang kebetulan.",
+      "C": "Karena cross-validation sepenuhnya menghilangkan kebutuhan test set terpisah dalam seluruh proses evaluasi model.",
+      "D": "Karena cross-validation secara otomatis melakukan feature engineering pada setiap fold selama proses evaluasi berlangsung."
     },
-    "answer": "C",
-    "explanation": "Scikit-learn selalu memaksimalkan skor. Karena RMSE adalah error (lebih kecil = lebih baik), dinegasikan → neg_RMSE. GridSearch memilih neg_RMSE terbesar = RMSE terkecil = model terbaik. Contoh: −30,000 > −50,000 → RMSE 30,000 lebih baik."
+    "answer": "B",
+    "explanation": "Satu split bisa bias atau kebetulan. k-Fold CV mengurangi risiko overfitting terhadap satu split, memberikan estimasi performa yang lebih stabil, dan menggunakan lebih banyak variasi data untuk evaluasi."
   },
   {
     "id": 10,
-    "question": "Jika nilai RMSE model masih cukup besar, langkah teknis apa yang dapat dilakukan tanpa mengganti algoritma?",
+    "question": "GridSearchCV menggunakan scoring='neg_root_mean_squared_error'. Mengapa nilainya negatif dan apa dampaknya pada penentuan model terbaik?",
     "options": {
-      "A": "Menghapus seluruh dataset yang ada dan mulai mengumpulkan data baru dari sumber yang berbeda dan lebih lengkap.",
-      "B": "Menambah feature engineering, memperbaiki preprocessing, atau memperluas range hyperparameter di GridSearch.",
-      "C": "Mengurangi jumlah data training secara signifikan agar model lebih fokus pada pola yang paling relevan.",
-      "D": "Menghentikan proses training lebih awal sebelum konvergen penuh untuk menghindari terjadinya overfitting."
+      "A": "Karena nilai error dalam statistik memang selalu dinyatakan negatif — GridSearch memilih nilai absolut terkecil sebagai terbaik.",
+      "B": "Karena terjadi kesalahan desain Scikit-learn — nilai negatif diabaikan dan GridSearch tetap mencari RMSE terbesar.",
+      "C": "Karena Scikit-learn memaksimalkan skor; RMSE dinegasikan agar bisa dimaksimalkan — nilai paling besar berarti RMSE paling kecil.",
+      "D": "Karena format negatif memudahkan visualisasi hasil GridSearch dan tidak berpengaruh pada pemilihan model terbaik."
     },
-    "answer": "B",
-    "explanation": "Performa model dapat diperbaiki dengan: menambah fitur rasio baru, memperluas range hyperparameter, menangani outlier lebih baik, mencoba teknik scaling yang berbeda, atau menambah jumlah fold CV — semuanya tanpa ganti algoritma."
+    "answer": "C",
+    "explanation": "Scikit-learn selalu melakukan maximization. RMSE adalah metrik error (semakin kecil semakin baik). Agar bisa dimaksimalkan → dibuat negatif. GridSearch memilih nilai paling besar → berarti RMSE paling kecil."
   }
 ]
