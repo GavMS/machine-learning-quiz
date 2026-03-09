@@ -133,20 +133,43 @@ function loadHistory() {
     let history = JSON.parse(localStorage.getItem('ml_quiz_history') || '[]');
     list.innerHTML = '';
 
+    const clearBtn = document.getElementById('clear-history-btn');
+
     if (history.length === 0) {
         list.innerHTML = '<li class="text-slate-400 italic text-xs">Belum ada riwayat...</li>';
+        if (clearBtn) clearBtn.classList.add('hidden');
         return;
     }
+
+    if (clearBtn) clearBtn.classList.remove('hidden');
 
     const reversed = history.slice().reverse().slice(0, 5);
     reversed.forEach((h, idx) => {
         const realIdx = history.length - 1 - idx;
         const badgeClass = h.mode === 'easy' ? 'badge-easy' : 'badge-hard';
         const hasDetail = h.questions && h.answers;
-        const clickAttr = hasDetail ? ' onclick="reviewHistory(' + realIdx + ')" style="cursor:pointer"' : '';
-        const hoverClass = hasDetail ? ' hover:bg-[#f0f2f5] rounded-lg px-2 -mx-2 transition-colors' : '';
-        list.innerHTML += '<li class="flex justify-between items-center' + hoverClass + '"' + clickAttr + '><span class="badge ' + badgeClass + ' text-xs">' + h.mode.toUpperCase() + '</span><span class="text-[#1a1a2e] font-bold text-sm">' + h.score + '%</span><span class="text-slate-400 text-xs">' + h.date + '</span></li>';
+        const clickAttr = hasDetail ? ' onclick="reviewHistory(' + realIdx + ')"' : '';
+        const hoverClass = hasDetail ? ' hover:bg-[#f0f2f5] rounded-lg transition-colors' : '';
+        list.innerHTML += '<li class="flex justify-between items-center px-2 -mx-2 rounded-lg' + hoverClass + '"' + (hasDetail ? ' style="cursor:pointer"' : '') + clickAttr + '>'
+            + '<span class="badge ' + badgeClass + ' text-xs">' + h.mode.toUpperCase() + '</span>'
+            + '<span class="text-[#1a1a2e] font-bold text-sm">' + h.score + '%</span>'
+            + '<span class="flex items-center gap-2"><span class="text-slate-400 text-xs">' + h.date + '</span>'
+            + '<button onclick="event.stopPropagation(); deleteHistory(' + realIdx + ')" class="text-slate-300 hover:text-red-500 transition-colors" title="Hapus">'
+            + '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>'
+            + '</button></span></li>';
     });
+}
+
+function deleteHistory(index) {
+    let history = JSON.parse(localStorage.getItem('ml_quiz_history') || '[]');
+    history.splice(index, 1);
+    localStorage.setItem('ml_quiz_history', JSON.stringify(history));
+    loadHistory();
+}
+
+function clearHistory() {
+    localStorage.removeItem('ml_quiz_history');
+    loadHistory();
 }
 
 function showScreen(id) {

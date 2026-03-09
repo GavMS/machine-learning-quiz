@@ -40,7 +40,10 @@
                 </div>
 
                 <div class="history-card rounded-xl p-4 text-left">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Riwayat Skor</h3>
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Riwayat Skor</h3>
+                        <button id="clear-history-btn" onclick="clearHistory()" class="hidden text-xs text-red-400 hover:text-red-600 font-semibold transition-colors">Hapus Semua</button>
+                    </div>
                     <ul id="score-history" class="text-sm space-y-2">
                         <li class="text-slate-400 italic text-xs">Belum ada riwayat...</li>
                     </ul>
