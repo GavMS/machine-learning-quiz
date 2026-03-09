@@ -31,11 +31,12 @@ const quizEasyData = [
   {
     "id": 3,
     "question": "Pada dataset housing, kolom total_bedrooms memiliki masalah apa berdasarkan hasil housing.info()?",
+    "image": "img/gambar_housing_info.png",
     "options": {
-      "A": "Bertipe object sehingga perlu di-encode.",
-      "B": "Memiliki nilai negatif yang tidak valid.",
+      "A": "Bertipe object sehingga perlu di-encode terlebih dahulu sebelum bisa digunakan model.",
+      "B": "Memiliki nilai negatif yang tidak valid dan perlu dibersihkan sebelum proses training.",
       "C": "Memiliki missing values karena jumlah non-null lebih sedikit dari total entries.",
-      "D": "Nilainya selalu nol sehingga tidak berguna."
+      "D": "Nilainya selalu nol pada sebagian besar baris sehingga tidak memberikan informasi berguna."
     },
     "answer": "C",
     "explanation": "Dari housing.info(), total_bedrooms hanya memiliki 16,344 non-null dari 16,512 entries \u2014 artinya terdapat ~168 missing values yang harus ditangani sebelum training."
@@ -78,24 +79,25 @@ const quizEasyData = [
   },
   {
     "id": 7,
-    "question": "Apa perbedaan utama antara Grid Search dan Random Search pada hyperparameter tuning?",
+    "question": "Tipe data apa saja yang ada dalam atribut (kolom) pada dataset yang digunakan?",
+    "image": "img/gambar_housing_info.png",
     "options": {
-      "A": "Grid Search memilih parameter secara acak; Random Search terstruktur.",
-      "B": "Random Search memilih parameter secara terstruktur; Grid Search secara acak.",
-      "C": "Grid Search mencoba semua kombinasi parameter yang ditentukan; Random Search memilih kombinasi secara acak.",
-      "D": "Tidak ada perbedaan signifikan antara keduanya."
+      "A": "Semua kolom bertipe int64 karena dataset perumahan hanya menyimpan data bilangan bulat tanpa desimal.",
+      "B": "Terdapat campuran tipe int64 dan object karena beberapa kolom numerik disimpan sebagai bilangan bulat.",
+      "C": "Semua kolom bertipe float64 saja karena dataset tidak mengandung kolom dengan tipe data kategorik.",
+      "D": "Terdapat dua tipe data yaitu float64 untuk kolom numerik dan object untuk kolom kategorik."
     },
-    "answer": "C",
-    "explanation": "GridSearchCV mengevaluasi exhaustively semua kombinasi hyperparameter yang ditentukan. RandomizedSearchCV memilih sejumlah kombinasi secara acak dari ruang parameter \u2014 lebih efisien untuk ruang yang besar."
+    "answer": "D",
+    "explanation": "Dari housing.info(), 8 kolom bertipe float64 (numerik) dan 1 kolom bertipe object yaitu ocean_proximity (kategorik)."
   },
   {
     "id": 8,
     "question": "Mengapa menggunakan cross-validation (misalnya 3-fold) dalam GridSearchCV, bukan hanya satu kali split train-test?",
     "options": {
-      "A": "Karena cross-validation selalu menghasilkan RMSE yang lebih kecil.",
+      "A": "Karena cross-validation selalu menghasilkan nilai RMSE yang lebih kecil sehingga model tampak lebih akurat.",
       "B": "Karena satu kali split bisa menghasilkan evaluasi yang bias atau kebetulan; cross-validation memberikan estimasi yang lebih stabil.",
-      "C": "Karena cross-validation menghilangkan kebutuhan untuk test set.",
-      "D": "Karena cross-validation secara otomatis melakukan feature engineering."
+      "C": "Karena cross-validation sepenuhnya menghilangkan kebutuhan test set terpisah dalam proses evaluasi akhir.",
+      "D": "Karena cross-validation secara otomatis melakukan feature engineering pada setiap fold selama proses evaluasi."
     },
     "answer": "B",
     "explanation": "Satu split mungkin beruntung atau tidak beruntung. k-Fold CV memastikan setiap data pernah menjadi validation set sehingga estimasi performa lebih reliabel dan rendah bias."
@@ -142,6 +144,7 @@ const quizHardData = [
   {
     "id": 2,
     "question": "Seorang data scientist menjalankan housing.info() dan mendapati total_bedrooms memiliki 16,344 non-null dari 16,512 total entries. Manakah langkah preprocessing yang paling tepat untuk menangani ini?",
+    "image": "img/gambar_housing_info.png",
     "options": {
       "A": "Hapus seluruh kolom total_bedrooms karena data tidak lengkap dan akan mengganggu training.",
       "B": "Isi missing values dengan nilai 0 karena distrik tanpa data kemungkinan tidak memiliki kamar tidur.",
@@ -277,6 +280,16 @@ function loadQuestion() {
     document.getElementById('question-number').innerText = 'Soal ' + (currentQIndex + 1);
     document.getElementById('question-text').innerText = qData.question;
 
+    const imgContainer = document.getElementById('question-image-container');
+    const imgEl = document.getElementById('question-image');
+    if (qData.image) {
+        imgEl.src = qData.image;
+        imgContainer.classList.remove('hidden');
+    } else {
+        imgEl.src = '';
+        imgContainer.classList.add('hidden');
+    }
+
     const optsContainer = document.getElementById('options-container');
     optsContainer.innerHTML = '';
 
@@ -325,6 +338,9 @@ function finishQuiz() {
 
         let html = '<div class="mb-4 pb-4 border-b border-[#e9ecef] last:border-0">';
         html += '<p class="font-semibold text-sm ' + (isCorrect ? 'result-correct' : 'result-wrong') + ' mb-1">Q' + (i + 1) + ': ' + q.question + '</p>';
+        if (q.image) {
+            html += '<img src="' + q.image + '" alt="Gambar soal ' + (i + 1) + '" class="w-full rounded-lg border border-[#e2e5ea] my-2 cursor-pointer hover:opacity-90 transition-opacity" onclick="openImageModal(this.src)">';
+        }
         html += '<p class="text-xs text-slate-500 mb-1">Jawaban Anda: <strong class="text-[#1a1a2e]">' + q.options[userAnswers[i]] + '</strong></p>';
         if (!isCorrect) {
             html += '<p class="text-xs mb-1"><span class="text-slate-500">Jawaban Benar:</span> <strong class="result-correct">' + q.options[q.answer] + '</strong></p>';
@@ -374,4 +390,17 @@ function showScreen(id) {
 
 function resetQuiz() {
     showScreen('start-screen');
+}
+
+function openImageModal(src) {
+    const modal = document.getElementById('image-modal');
+    document.getElementById('modal-image').src = src;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('image-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
 }
