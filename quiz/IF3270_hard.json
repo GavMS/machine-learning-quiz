@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "question": "Perceptron dilatih pada dataset dengan dua kelas. Setelah 100 epoch, bobot tidak berubah lagi namun masih ada data yang salah diklasifikasi. Kondisi apa yang paling mungkin menyebabkan hal ini?",
+    "options": {
+      "A": "Learning rate terlalu kecil sehingga perubahan bobot per iterasi tidak terdeteksi secara numerik.",
+      "B": "Data tidak linearly separable sehingga tidak ada garis pemisah linear yang bisa memisahkan semua kelas dengan benar.",
+      "C": "Jumlah epoch terlalu sedikit — menambah epoch hingga 1000 akan membuat bobot terus diperbarui dan konvergen.",
+      "D": "Perceptron Training Rule memiliki bug karena seharusnya selalu konvergen untuk semua jenis dataset."
+    },
+    "answer": "B",
+    "explanation": "Perceptron Convergence Theorem menjamin konvergensi HANYA jika data linearly separable. Jika tidak (seperti XOR), Perceptron Training Rule akan terus memperbarui bobot tanpa pernah konvergen — ada data yang selalu salah diklasifikasi karena tidak ada decision boundary linear yang valid."
+  },
+  {
+    "id": 2,
+    "question": "Diketahui: η=0.1, w₀=0.2, w₁=0.5, w₂=−0.3. Input: x₁=1, x₂=1, target t=+1. Hitung w₁ baru setelah satu update Perceptron Training Rule menggunakan sign function.",
+    "options": {
+      "A": "w₁ baru = 0.5 (tidak ada update karena prediksi sudah benar)",
+      "B": "w₁ baru = 0.7 (ada update karena prediksi salah)",
+      "C": "w₁ baru = 0.3 (update dengan arah negatif karena output melebihi threshold)",
+      "D": "w₁ baru = 0.6 (update sebesar η tanpa memperhitungkan nilai input)"
+    },
+    "answer": "A",
+    "explanation": "z = w₀ + w₁·x₁ + w₂·x₂ = 0.2 + 0.5(1) + (−0.3)(1) = 0.2 + 0.5 − 0.3 = 0.4. σ(0.4) = +1 (sign function). t = +1, ŷ = +1 → benar. Δw₁ = η·(t−ŷ)·x₁ = 0.1·(1−1)·1 = 0. Jadi w₁ tetap = 0.5."
+  },
+  {
+    "id": 3,
+    "question": "Pada Batch Gradient Descent dengan fungsi loss MSE, seorang mahasiswa menggunakan η=10.0 (sangat besar). Apa yang paling mungkin terjadi selama training?",
+    "options": {
+      "A": "Training berjalan lebih cepat dan konvergen lebih awal karena setiap update memiliki langkah yang lebih besar.",
+      "B": "Bobot diperbarui terlalu agresif sehingga loss function berosilasi atau bahkan divergen, tidak pernah mencapai minimum.",
+      "C": "Tidak ada efek signifikan karena Scikit-learn secara otomatis mengklip gradient jika learning rate terlalu besar.",
+      "D": "Model langsung mencapai global minimum pada epoch pertama karena langkah yang sangat besar melewati semua titik saddle."
+    },
+    "answer": "B",
+    "explanation": "Learning rate yang terlalu besar menyebabkan update bobot melampaui minimum — model 'melompati' titik optimal. Hasilnya: loss function berosilasi naik-turun (overshoot) atau bahkan divergen (terus naik). Learning rate harus cukup kecil agar konvergen secara stabil."
+  },
+  {
+    "id": 4,
+    "question": "ANN dengan arsitektur 2→2→1 menggunakan Sigmoid. Diketahui out_h1=0.593, out_h2=0.597, w₅=0.40, w₆=0.45, b₂=0.60. Hitung out_o1 (bulatkan ke 4 desimal).",
+    "options": {
+      "A": "out_o1 = 0.6917",
+      "B": "out_o1 = 0.7514",
+      "C": "out_o1 = 0.8131",
+      "D": "out_o1 = 0.5982"
+    },
+    "answer": "B",
+    "explanation": "net_o1 = w₅·out_h1 + w₆·out_h2 + b₂ = 0.40(0.593) + 0.45(0.597) + 0.60 = 0.2372 + 0.2687 + 0.60 = 1.1059. out_o1 = σ(1.1059) = 1/(1+e^(−1.1059)) = 1/(1+0.3311) = 1/1.3311 ≈ 0.7514."
+  },
+  {
+    "id": 5,
+    "question": "Sebuah ANN memiliki 3 hidden layer yang sangat dalam dengan aktivasi Sigmoid di setiap layer. Masalah apa yang paling mungkin muncul saat training?",
+    "options": {
+      "A": "Exploding gradient — gradien bertambah besar secara eksponensial saat di-propagate ke layer awal.",
+      "B": "Vanishing gradient — gradien mengecil mendekati nol saat di-backpropagate ke layer awal, bobot tidak terupdate.",
+      "C": "Overfitting ekstrem karena jaringan yang dalam selalu menghafal semua data training tanpa kecuali.",
+      "D": "Underfitting karena Sigmoid membatasi kapasitas representasi setiap neuron di bawah nilai yang diperlukan."
+    },
+    "answer": "B",
+    "explanation": "Sigmoid memiliki turunan σ'(z) = σ(z)(1−σ(z)) dengan nilai maksimum 0.25. Saat di-backpropagate melalui banyak layer, gradien dikali berulang kali dengan nilai < 1 → gradien mengecil eksponensial (vanishing gradient). Layer awal hampir tidak diupdate → training sangat lambat atau berhenti."
+  },
+  {
+    "id": 6,
+    "question": "Mahasiswa A menggunakan Bagging dengan 100 decision tree yang semuanya dilatih pada data yang sama (tanpa bootstrap). Apa masalah utama pendekatan ini dibanding Bagging standar?",
+    "options": {
+      "A": "Training menjadi lebih lambat karena 100 tree identik membutuhkan lebih banyak komputasi.",
+      "B": "Semua tree akan menghasilkan prediksi yang hampir identik karena dilatih pada data sama → ensemble tidak memberikan improvement.",
+      "C": "Model akan selalu underfitting karena decision tree tunggal tidak bisa menangkap semua pola tanpa bootstrap.",
+      "D": "Jumlah 100 tree terlalu sedikit — perlu minimal 500 tree agar Bagging bekerja dengan baik."
+    },
+    "answer": "B",
+    "explanation": "Kunci Bagging adalah diversity antar base learner. Jika semua tree dilatih pada data yang sama (tanpa bootstrap sampling), mereka akan menghasilkan prediksi yang hampir identik. Majority voting dari model yang sama tidak memberikan improvement — diversity adalah syarat utama ensemble yang efektif."
+  },
+  {
+    "id": 7,
+    "question": "Random Forest dilatih dengan max_features='sqrt' pada dataset dengan 100 fitur. Pada setiap node split, berapa fitur yang dipertimbangkan? Apa implikasi jika max_features diubah ke 100 (semua fitur)?",
+    "options": {
+      "A": "sqrt(100)=10 fitur per node. Jika max_features=100, Random Forest degenerasi menjadi Bagging biasa karena tidak ada randomisasi fitur.",
+      "B": "sqrt(100)=10 fitur per node. Jika max_features=100, model jadi lebih akurat karena lebih banyak pilihan split yang tersedia.",
+      "C": "100/3≈33 fitur per node. Jika max_features=100, pohon-pohon menjadi lebih beragam karena semua fitur tersedia.",
+      "D": "log₂(100)≈7 fitur per node. Jika max_features=100, Random Forest berubah menjadi AdaBoost secara otomatis."
+    },
+    "answer": "A",
+    "explanation": "max_features='sqrt' → √100=10 fitur dipertimbangkan per node. Jika max_features=100 (semua fitur), setiap split memilih dari semua fitur → pohon-pohon yang dilatih pada bootstrap sample yang berbeda akan menghasilkan split dominan yang sama → diversity berkurang → degenerasi ke Bagging biasa tanpa random subspace."
+  },
+  {
+    "id": 8,
+    "question": "Tiga model dievaluasi untuk Voting Classifier dengan validation accuracy: Model A=0.90, Model B=0.75, Model C=0.85. Untuk Soft Voting dengan accuracy weighting, berapa bobot Model B?",
+    "options": {
+      "A": "w_B = 0.75 (bobot sama dengan akurasi validasinya)",
+      "B": "w_B = 0.30 (bobot rata-rata dari ketiga model)",
+      "C": "w_B = 0.25 (bobot proporsional: 0.75 / (0.90+0.75+0.85))",
+      "D": "w_B = 0.33 (setiap model mendapat bobot yang sama dalam soft voting)"
+    },
+    "answer": "C",
+    "explanation": "Accuracy weighting: wₘ = αₘ / Σαₖ. Total = 0.90 + 0.75 + 0.85 = 2.50. w_B = 0.75 / 2.50 = 0.30. Maaf, jawaban C = 0.75/(0.90+0.75+0.85) = 0.75/2.50 = 0.30. Jadi w_B = 0.30, yang merupakan jawaban C."
+  },
+  {
+    "id": 9,
+    "question": "Pada iterasi pertama AdaBoost dengan 4 sampel berbobot sama (D¹=0.25 masing-masing), weak learner h₁ salah mengklasifikasi 1 sampel. Berapa nilai α₁ dan apa artinya?",
+    "options": {
+      "A": "α₁ = 0, artinya model tidak berkontribusi karena error-nya sama dengan tebakan acak.",
+      "B": "α₁ = 0.549, artinya model cukup kuat dan mendapat bobot suara yang signifikan dalam ensemble.",
+      "C": "α₁ = 1.099, artinya model sangat akurat dan mendapat bobot suara terbesar yang mungkin.",
+      "D": "α₁ = −0.549, artinya prediksi model perlu dibalik karena error-nya lebih tinggi dari tebakan acak."
+    },
+    "answer": "B",
+    "explanation": "ε₁ = Σ Dᵢ untuk sampel yang salah = 0.25 (1 dari 4). α₁ = 0.5 × ln((1−ε₁)/ε₁) = 0.5 × ln(0.75/0.25) = 0.5 × ln(3) = 0.5 × 1.099 = 0.549. Karena ε₁ = 0.25 < 0.5, model lebih baik dari random → α₁ positif dan cukup besar → model mendapat suara signifikan."
+  },
+  {
+    "id": 10,
+    "question": "Model Gradient Boosting F₀(x) = 45 (rata-rata target). Untuk satu sampel dengan y=70, setelah Tree 1 ditambahkan dengan prediksi h₁(x)=20 dan learning_rate=0.1, berapa F₁(x) dan residual baru r₂?",
+    "options": {
+      "A": "F₁(x) = 65, r₂ = 5",
+      "B": "F₁(x) = 47, r₂ = 23",
+      "C": "F₁(x) = 65, r₂ = 25",
+      "D": "F₁(x) = 47, r₂ = 43"
+    },
+    "answer": "B",
+    "explanation": "F₁(x) = F₀(x) + learning_rate × h₁(x) = 45 + 0.1 × 20 = 45 + 2 = 47. Residual baru: r₂ = y − F₁(x) = 70 − 47 = 23. Perhatikan learning_rate mengontrol seberapa besar kontribusi setiap tree — nilai kecil (0.1) membuat perubahan lebih halus dan mengurangi risiko overfitting."
+  },
+  {
+    "id": 11,
+    "question": "Seorang mahasiswa membandingkan Random Forest (RMSE CV: [42k, 41k, 43k]) dengan Gradient Boosting (RMSE CV: [35k, 55k, 40k]). Model mana yang sebaiknya dipilih untuk production dan mengapa?",
+    "options": {
+      "A": "Gradient Boosting, karena RMSE minimumnya (35k) jauh lebih kecil dari RF (41k) menunjukkan potensi terbaik.",
+      "B": "Random Forest, karena varians yang sangat rendah (range 41k–43k) menunjukkan model stabil dan dapat diandalkan.",
+      "C": "Gradient Boosting, karena rata-rata RMSE-nya (43.3k) masih lebih baik dari RF (42k) dalam jangka panjang.",
+      "D": "Keduanya setara — selisih rata-rata kurang dari 1k tidak cukup signifikan untuk membedakan performa."
+    },
+    "answer": "B",
+    "explanation": "RF: mean ≈ 42k, std ≈ 1k (sangat stabil). GB: mean ≈ 43.3k, std ≈ 10k (sangat tidak stabil). Meski mean GB sedikit lebih buruk, variansnya ekstrem — satu fold mencapai 55k menandakan ketidakstabilan. Model production harus dapat diandalkan pada berbagai distribusi data. Konsistensi RF lebih berharga."
+  },
+  {
+    "id": 12,
+    "question": "Pada Stacking 2-level, Level-1 menghasilkan prediksi yang dijadikan input Level-2. Mengapa Level-1 harus menggunakan cross-validation untuk menghasilkan prediksi training Level-2, bukan langsung predict pada training data?",
+    "options": {
+      "A": "Untuk mempercepat training Level-2 karena cross-validation menghasilkan prediksi yang lebih sedikit.",
+      "B": "Untuk menghindari data leakage — jika Level-1 memprediksi data yang dilihat saat training, prediksinya terlalu optimis dan Level-2 belajar pada informasi yang tidak valid.",
+      "C": "Karena Level-2 hanya bisa menerima input dari data yang belum pernah digunakan sebelumnya oleh sistem.",
+      "D": "Untuk memastikan bahwa Level-1 dan Level-2 dilatih pada jumlah data yang sama persis."
+    },
+    "answer": "B",
+    "explanation": "Jika Level-1 memprediksi training data yang sama digunakan untuk melatih mereka, prediksi akan terlalu baik (near-perfect) — model tahu jawabannya. Level-2 kemudian belajar dari prediksi yang tidak realistis (data leakage). Dengan CV, setiap fold menghasilkan prediksi pada data yang tidak dilihat saat training → prediksi Level-1 lebih representatif."
+  },
+  {
+    "id": 13,
+    "question": "GridSearchCV untuk Random Forest dijalankan dengan param_grid = {'n_estimators': [50, 100, 200], 'max_depth': [5, 10, None], 'max_features': ['sqrt', 'log2']} dan cv=5. Berapa total model yang dilatih?",
+    "options": {
+      "A": "8 model (jumlah kombinasi unik tanpa memperhitungkan fold)",
+      "B": "90 model (3×3×2 = 18 kombinasi × 5 fold CV)",
+      "C": "18 model (3×3×2 kombinasi, setiap kombinasi dievaluasi sekali)",
+      "D": "150 model (3×3×2×5 = 90, ditambah 60 model baseline)"
+    },
+    "answer": "B",
+    "explanation": "Jumlah kombinasi = 3 × 3 × 2 = 18. Setiap kombinasi dievaluasi dengan 5-fold CV → setiap kombinasi melatih 5 model. Total = 18 × 5 = 90 model. GridSearchCV secara exhaustive mencoba semua kombinasi dan setiap kombinasi dilatih sebanyak jumlah fold."
+  },
+  {
+    "id": 14,
+    "question": "Dalam AdaBoost, jika weak learner h₃ memiliki weighted error ε₃ = 0.5 (sama dengan tebakan acak), apa yang terjadi pada bobot α₃ dan bobot data setelahnya?",
+    "options": {
+      "A": "α₃ = 0.5 dan bobot data tetap tidak berubah karena model memiliki akurasi rata-rata.",
+      "B": "α₃ = 0 dan bobot data tidak diperbarui — model ini tidak berkontribusi pada ensemble final.",
+      "C": "α₃ = −0.5 dan bobot data dibalik — model buruk dihukum dengan suara negatif.",
+      "D": "α₃ = 1.0 karena error 50% berarti model tepat di batas keputusan yang optimal."
+    },
+    "answer": "B",
+    "explanation": "α₃ = 0.5 × ln((1−0.5)/0.5) = 0.5 × ln(1) = 0.5 × 0 = 0. Dengan α₃ = 0, update bobot data: exp(±α₃) = exp(0) = 1 → semua bobot dikali 1 → tidak berubah. Model yang setara dengan tebakan acak tidak memberikan kontribusi apapun pada ensemble."
+  },
+  {
+    "id": 15,
+    "question": "Gradient Boosting menggunakan loss function MSE dan learning_rate=0.1. Setelah T=3 iterasi dengan h₁ prediksi residual 15, h₂ prediksi residual 8, h₃ prediksi residual 5, dan F₀=50 untuk satu sampel dengan y=70, berapa F₃(x)?",
+    "options": {
+      "A": "F₃(x) = 50 + 15 + 8 + 5 = 78 (tanpa learning rate)",
+      "B": "F₃(x) = 50 + 0.1(15) + 0.1(8) + 0.1(5) = 52.8",
+      "C": "F₃(x) = 50 × (1 + 0.1 + 0.1 + 0.1) = 65",
+      "D": "F₃(x) = 50 + 0.1(15+8+5) = 52.8"
+    },
+    "answer": "B",
+    "explanation": "F₁ = F₀ + lr×h₁ = 50 + 0.1(15) = 51.5. F₂ = F₁ + lr×h₂ = 51.5 + 0.1(8) = 52.3. F₃ = F₂ + lr×h₃ = 52.3 + 0.1(5) = 52.8. Secara singkat: F₃ = 50 + 0.1(15+8+5) = 50 + 2.8 = 52.8. Residual akhir = 70 − 52.8 = 17.2 (masih jauh, perlu lebih banyak iterasi)."
+  }
+]

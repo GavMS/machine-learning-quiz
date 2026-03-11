@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "question": "Apa yang dimaksud dengan Perceptron dalam konteks Machine Learning?",
+    "options": {
+      "A": "Algoritma clustering yang mengelompokkan data tanpa label ke dalam beberapa kelompok secara otomatis.",
+      "B": "Model ML paling dasar yang terinspirasi dari neuron biologis, menerima input, mengalikannya dengan bobot, dan menghasilkan keputusan biner.",
+      "C": "Teknik dimensionality reduction yang mengubah data berdimensi tinggi menjadi representasi berdimensi lebih rendah.",
+      "D": "Jaringan saraf berlapis banyak yang mampu memecahkan masalah klasifikasi non-linear secara langsung."
+    },
+    "answer": "B",
+    "explanation": "Perceptron adalah model ML paling dasar yang terinspirasi dari neuron biologis. Ia menerima beberapa input, mengalikan setiap input dengan bobot (weight), menjumlahkannya, lalu membuat keputusan biner: +1 atau −1."
+  },
+  {
+    "id": 2,
+    "question": "Apa peran komponen 'bias' (w₀) pada Perceptron?",
+    "options": {
+      "A": "Mengubah semua nilai input menjadi positif agar net input selalu bernilai lebih besar dari nol.",
+      "B": "Menentukan jumlah iterasi maksimum yang diperbolehkan selama proses training berlangsung.",
+      "C": "Menggeser batas keputusan (decision boundary) sehingga model lebih fleksibel dan tidak harus melewati titik origin.",
+      "D": "Menghitung rata-rata semua nilai input sebelum diteruskan ke activation function."
+    },
+    "answer": "C",
+    "explanation": "Bias (w₀ = b = θ) berfungsi sebagai threshold atau ambang batas yang menggeser decision boundary. Tanpa bias, decision boundary selalu melewati titik origin sehingga model kurang fleksibel dalam memisahkan kelas."
+  },
+  {
+    "id": 3,
+    "question": "Pada Perceptron Training Rule, kapan bobot (weight) diperbarui?",
+    "options": {
+      "A": "Setiap epoch, tanpa memperhatikan apakah prediksi benar atau salah.",
+      "B": "Hanya ketika prediksi perceptron salah (ŷ ≠ t); jika benar, tidak ada update.",
+      "C": "Hanya pada data terakhir di setiap epoch, setelah semua data lainnya diproses.",
+      "D": "Setiap kali nilai net input z melewati ambang batas threshold yang telah ditentukan."
+    },
+    "answer": "B",
+    "explanation": "Perceptron Training Rule hanya memperbarui bobot saat prediksi salah (ŷ ≠ t). Jika benar, Δwⱼ = 0 sehingga tidak ada perubahan. Update menggunakan rumus: Δwⱼ = η · (t − ŷ) · xⱼ."
+  },
+  {
+    "id": 4,
+    "question": "Apa perbedaan utama antara Batch Gradient Descent dan Stochastic Gradient Descent (SGD)?",
+    "options": {
+      "A": "Batch GD hanya bisa digunakan untuk regresi, sedangkan SGD hanya untuk klasifikasi.",
+      "B": "Batch GD memperbarui bobot setelah memproses seluruh dataset per epoch; SGD memperbarui bobot setelah setiap sampel data.",
+      "C": "SGD menggunakan fungsi loss yang berbeda (cross-entropy), sedangkan Batch GD selalu menggunakan MSE.",
+      "D": "Batch GD lebih cepat dari SGD karena tidak perlu mengulang proses untuk setiap data individu."
+    },
+    "answer": "B",
+    "explanation": "Batch GD menghitung gradien menggunakan seluruh dataset dan melakukan satu update per epoch → stabil tapi lambat. SGD menghitung gradien dan memperbarui bobot setelah setiap sampel → lebih cepat dan cocok untuk dataset besar, namun jalur updatenya lebih zig-zag."
+  },
+  {
+    "id": 5,
+    "question": "Mengapa Perceptron tidak bisa memecahkan masalah XOR?",
+    "options": {
+      "A": "Karena Perceptron tidak memiliki fungsi aktivasi sehingga tidak bisa menghasilkan output biner.",
+      "B": "Karena Perceptron hanya bisa membuat satu garis pemisah linear, sedangkan XOR memerlukan batas keputusan non-linear.",
+      "C": "Karena Perceptron tidak mendukung lebih dari dua fitur input secara bersamaan.",
+      "D": "Karena learning rate Perceptron selalu terlalu besar untuk menangani data yang distribusinya tidak seragam."
+    },
+    "answer": "B",
+    "explanation": "Perceptron hanya mampu membuat decision boundary berupa garis lurus (linear). Masalah XOR tidak bisa dipisahkan secara linear (not linearly separable), sehingga tidak ada garis lurus yang bisa memisahkan kelas +1 dan −1 dengan benar."
+  },
+  {
+    "id": 6,
+    "question": "Apa fungsi dari Hidden Layer dalam Artificial Neural Network (ANN)?",
+    "options": {
+      "A": "Menerima data mentah dari luar dan meneruskannya langsung ke output tanpa pemrosesan apapun.",
+      "B": "Menghasilkan prediksi akhir model yang langsung dibandingkan dengan label target selama training.",
+      "C": "Mengekstrak representasi dan pola tersembunyi dari data sehingga ANN mampu mempelajari hubungan non-linear.",
+      "D": "Menyimpan bobot model secara permanen agar tidak berubah selama proses backpropagation berlangsung."
+    },
+    "answer": "C",
+    "explanation": "Hidden Layer bertugas mengekstrak representasi tersembunyi dari data. Dengan activation function non-linear (seperti ReLU atau Sigmoid), hidden layer memungkinkan ANN mempelajari pola dan hubungan non-linear yang tidak bisa ditangkap oleh perceptron tunggal."
+  },
+  {
+    "id": 7,
+    "question": "Pada Forward Propagation, apa yang dihitung oleh setiap neuron?",
+    "options": {
+      "A": "Selisih antara prediksi model dan label target untuk menghitung error di setiap layer.",
+      "B": "Net input (kombinasi linear input dan bobot) kemudian ditransformasi oleh activation function menjadi output neuron.",
+      "C": "Gradien error terhadap bobot untuk memperbarui parameter model secara langsung.",
+      "D": "Rata-rata semua nilai output dari layer sebelumnya sebagai representasi sederhana."
+    },
+    "answer": "B",
+    "explanation": "Setiap neuron pada Forward Propagation menghitung: (1) net input = Σ(wᵢ · xᵢ) + bias, kemudian (2) output = σ(net input) menggunakan activation function. Informasi mengalir maju dari Input Layer → Hidden Layer(s) → Output Layer."
+  },
+  {
+    "id": 8,
+    "question": "Apa peran 'error term' (δ) dalam algoritma Backpropagation?",
+    "options": {
+      "A": "Mengukur seberapa jauh output model dari target, hanya dihitung di Input Layer untuk efisiensi.",
+      "B": "Mengontrol learning rate secara adaptif agar proses training bisa berhenti otomatis saat konvergen.",
+      "C": "Menunjukkan seberapa besar kontribusi setiap neuron terhadap error total, digunakan untuk menghitung update bobot.",
+      "D": "Menyimpan nilai aktivasi setiap neuron sebagai referensi untuk iterasi training berikutnya."
+    },
+    "answer": "C",
+    "explanation": "Error term δ mengukur kontribusi setiap neuron terhadap error total. Untuk output: δₒ = oₒ(1−oₒ)(tₒ−oₒ). Untuk hidden: δₕ = oₕ(1−oₕ)·Σ(wₕₖ·δₖ). Nilai δ digunakan untuk menghitung Δw = η·δ·o, memperbarui setiap bobot proporsional terhadap kontribusi errornya."
+  },
+  {
+    "id": 9,
+    "question": "Mengapa fungsi aktivasi Sigmoid sering digunakan di Output Layer untuk klasifikasi biner?",
+    "options": {
+      "A": "Karena Sigmoid menghasilkan output berupa bilangan bulat {0, 1} yang langsung bisa dibandingkan dengan label.",
+      "B": "Karena Sigmoid menghasilkan output di rentang (0, 1) yang bisa diinterpretasikan sebagai probabilitas kelas.",
+      "C": "Karena Sigmoid adalah satu-satunya fungsi aktivasi yang memiliki turunan, sehingga diperlukan untuk backpropagation.",
+      "D": "Karena Sigmoid menghilangkan masalah vanishing gradient yang sering terjadi pada hidden layer dalam jaringan dalam."
+    },
+    "answer": "B",
+    "explanation": "Sigmoid σ(z) = 1/(1+e⁻ᶻ) menghasilkan output di rentang (0, 1), yang secara natural bisa diinterpretasikan sebagai probabilitas. Untuk klasifikasi biner, output > 0.5 biasanya dikategorikan sebagai kelas positif."
+  },
+  {
+    "id": 10,
+    "question": "Apa keunggulan utama menggunakan framework Keras dibandingkan mengimplementasikan ANN dari awal (from scratch)?",
+    "options": {
+      "A": "Keras hanya mendukung CPU sehingga model yang dihasilkan lebih deterministic dan mudah direplikasi.",
+      "B": "Keras menghasilkan model yang lebih akurat karena menggunakan algoritma optimasi yang tidak tersedia secara open source.",
+      "C": "Keras menyediakan abstraksi high-level yang memungkinkan membangun, melatih, dan mengevaluasi ANN dengan kode yang jauh lebih singkat.",
+      "D": "Keras secara otomatis menentukan arsitektur optimal (jumlah layer dan neuron) tanpa perlu konfigurasi manual."
+    },
+    "answer": "C",
+    "explanation": "Keras menyediakan API high-level yang memudahkan pembuatan ANN. Cukup dengan beberapa baris kode (Sequential, Dense, compile, fit), kita bisa membangun dan melatih jaringan neural yang kompleks tanpa harus mengimplementasikan forward propagation dan backpropagation secara manual."
+  },
+  {
+    "id": 11,
+    "question": "Apa prinsip dasar dari Ensemble Methods dalam Machine Learning?",
+    "options": {
+      "A": "Melatih satu model yang sangat kompleks dan dalam agar bisa menangkap semua pola yang ada dalam data.",
+      "B": "Menggabungkan prediksi beberapa model secara bersamaan untuk menghasilkan prediksi yang lebih baik dari model mana pun secara individual.",
+      "C": "Menggunakan satu algoritma terbaik berulang kali pada dataset yang berbeda hingga konvergensi tercapai.",
+      "D": "Memilih model dengan error terkecil dari sekumpulan kandidat dan membuang semua model lainnya."
+    },
+    "answer": "B",
+    "explanation": "Ensemble Methods menggabungkan beberapa model (base learners) untuk menghasilkan prediksi yang lebih baik dari satu model terbaik. Prinsip ini dikenal sebagai 'Wisdom of the Crowd' — gabungan pendapat banyak model sering lebih akurat daripada satu model mana pun."
+  },
+  {
+    "id": 12,
+    "question": "Apa yang dimaksud dengan 'Bootstrap Sampling' pada metode Bagging?",
+    "options": {
+      "A": "Memilih sejumlah fitur secara acak sebelum setiap split node dalam proses pembangunan decision tree.",
+      "B": "Membagi dataset secara rata menjadi beberapa subset yang sama besar tanpa ada data yang tumpang tindih.",
+      "C": "Pengambilan sampel acak dengan pengembalian (with replacement) dari dataset asli untuk membuat subset training yang beragam.",
+      "D": "Menghapus data duplikat dari dataset sebelum proses training untuk memastikan setiap sampel unik."
+    },
+    "answer": "C",
+    "explanation": "Bootstrap sampling adalah pengambilan sampel dengan replacement (with replacement) dari dataset asli. Dari N data, diambil N sampel secara acak — boleh berulang. Hasilnya setiap bootstrap sample mengandung ~63.2% data unik, dan ~36.8% data sisanya menjadi Out-of-Bag (OOB)."
+  },
+  {
+    "id": 13,
+    "question": "Apa perbedaan utama antara Bagging dan Random Forest?",
+    "options": {
+      "A": "Bagging menggunakan decision tree, sedangkan Random Forest menggunakan algoritma yang sama sekali berbeda.",
+      "B": "Random Forest menambahkan randomisasi pemilihan fitur di setiap node split, sedangkan Bagging hanya melakukan bootstrap sampling.",
+      "C": "Bagging adalah metode sequential, sedangkan Random Forest adalah metode parallel yang dilatih berurutan.",
+      "D": "Random Forest hanya bisa digunakan untuk regresi, sedangkan Bagging bisa untuk regresi dan klasifikasi."
+    },
+    "answer": "B",
+    "explanation": "Bagging melatih banyak decision tree menggunakan bootstrap sampling. Random Forest = Bagging + Random Subspace: di setiap node split, hanya k fitur acak (biasanya k=√p) yang dipertimbangkan, bukan semua fitur. Ini meningkatkan diversity antar pohon sehingga ensemble lebih akurat."
+  },
+  {
+    "id": 14,
+    "question": "Bagaimana AdaBoost menangani data yang salah diklasifikasi oleh model sebelumnya?",
+    "options": {
+      "A": "Data yang salah diklasifikasi langsung dihapus dari dataset agar tidak membingungkan model berikutnya.",
+      "B": "Bobot data yang salah diklasifikasi dinaikkan sehingga model berikutnya lebih fokus pada data yang sulit tersebut.",
+      "C": "Model berikutnya dilatih hanya menggunakan data yang salah, membuang semua data yang sudah benar.",
+      "D": "Learning rate diturunkan secara otomatis untuk model berikutnya agar bisa menangani data sulit lebih hati-hati."
+    },
+    "answer": "B",
+    "explanation": "AdaBoost mempertahankan bobot (D) untuk setiap data. Setelah setiap iterasi, bobot data yang salah diklasifikasi dinaikkan (× e^αₜ) dan data yang benar diturunkan (× e^−αₜ). Model berikutnya melatih pada data berbobot ini sehingga 'lebih memperhatikan' data yang sulit."
+  },
+  {
+    "id": 15,
+    "question": "Apa yang dimaksud dengan 'residual' dalam konteks Gradient Boosting?",
+    "options": {
+      "A": "Jumlah pohon yang tersisa dan belum dilatih pada iterasi saat ini dalam proses boosting.",
+      "B": "Perbedaan antara learning rate saat ini dengan learning rate optimal yang ingin dicapai.",
+      "C": "Selisih antara nilai target dan prediksi model saat ini — menjadi target training model berikutnya.",
+      "D": "Bobot akhir yang diberikan kepada setiap base model dalam prediksi ensemble final."
+    },
+    "answer": "C",
+    "explanation": "Residual = y − ŷ (nilai target dikurangi prediksi saat ini). Dalam Gradient Boosting, residual merupakan negative gradient dari loss function (untuk MSE). Model berikutnya dilatih untuk memprediksi residual ini, sehingga setiap iterasi mengurangi sisa error yang belum tertangkap."
+  }
+]

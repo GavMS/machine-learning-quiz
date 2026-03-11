@@ -151,36 +151,25 @@ body {
     line-height: 1.55;
 }
 
-.score-ring {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    border: 6px solid #e9ecef;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    position: relative;
-}
-.score-ring::before {
-    content: '';
-    position: absolute;
-    inset: -6px;
-    border-radius: 50%;
-    border: 6px solid transparent;
-    border-top-color: #0f4c75;
-    border-right-color: #0f4c75;
-    animation: scoreReveal 1s ease forwards;
-}
-
 @keyframes fadeInUp {
     0% { opacity: 0; transform: translateY(20px); }
     100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes scoreReveal {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
 
 /* Loading spinner */

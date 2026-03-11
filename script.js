@@ -1,23 +1,25 @@
 let quizData = [];
+let currentSubject = '';
 let currentMode = '';
 let currentQIndex = 0;
 let userAnswers = [];
 
 window.onload = loadHistory;
 
-function startQuiz(mode) {
+function startQuiz(subject, mode) {
+    currentSubject = subject;
     currentMode = mode;
     currentQIndex = 0;
     userAnswers = [];
 
     // Update mode badge
     const label = document.getElementById('mode-label');
-    label.innerText = mode.toUpperCase();
+    label.innerText = subject.toUpperCase() + ' - ' + mode.toUpperCase();
     label.className = 'badge ' + (mode === 'easy' ? 'badge-easy' : 'badge-hard');
 
     showScreen('quiz-screen');
 
-    const file = mode === 'easy' ? 'quiz_easy.json' : 'quiz_hard.json';
+    const file = 'quiz/' + subject + '_' + mode + '.json';
     fetch(file)
         .then(res => res.json())
         .then(data => {
@@ -108,16 +110,73 @@ function finishQuiz() {
     const percentage = Math.round((score / quizData.length) * 100);
 
     showScreen('results-screen');
-    document.getElementById('final-score-text').innerText = percentage + '%';
-    setTimeout(() => { document.getElementById('final-progress-bar').style.width = percentage + '%'; }, 100);
+    animateScore(percentage);
 
     document.getElementById('explanations-container').innerHTML = explHTML;
-    saveScore(currentMode, percentage);
+    saveScore(currentSubject, currentMode, percentage);
 }
 
-function saveScore(mode, percentage) {
+function animateScore(percentage) {
+    const circle = document.getElementById('score-circle');
+    const text = document.getElementById('final-score-text');
+    const message = document.getElementById('score-message');
+    
+    // Reset
+    circle.style.strokeDashoffset = '100';
+    text.innerText = '0%';
+    
+    let colorClass, bgMsgClass, ringClass, msgText;
+    if (percentage >= 80) {
+        colorClass = 'text-emerald-500';
+        bgMsgClass = 'bg-emerald-50';
+        ringClass = 'ring-emerald-100';
+        msgText = 'Luar Biasa!';
+    } else if (percentage >= 60) {
+        colorClass = 'text-amber-500';
+        bgMsgClass = 'bg-amber-50';
+        ringClass = 'ring-amber-100';
+        msgText = 'Cukup Baik!';
+    } else {
+        colorClass = 'text-red-500';
+        bgMsgClass = 'bg-red-50';
+        ringClass = 'ring-red-100';
+        msgText = 'Perlu Belajar Lagi';
+    }
+    
+    // Set circle color class
+    circle.className = `transition-all duration-[1500ms] ease-out ${colorClass}`;
+    // Set message style
+    message.className = `text-sm font-bold mt-2 px-5 py-2 rounded-full ring-1 transition-all duration-500 ${colorClass} ${bgMsgClass} ${ringClass}`;
+    message.innerText = msgText;
+    
+    setTimeout(() => {
+        circle.style.strokeDashoffset = 100 - percentage;
+        
+        let currentProgress = 0;
+        const duration = 1500;
+        const interval = 20;
+        const step = percentage / (duration / interval);
+        
+        if (percentage === 0) {
+            text.innerText = '0%';
+            return;
+        }
+        
+        const counter = setInterval(() => {
+            currentProgress += step;
+            if (currentProgress >= percentage) {
+                currentProgress = percentage;
+                clearInterval(counter);
+            }
+            text.innerText = Math.round(currentProgress) + '%';
+        }, interval);
+    }, 100);
+}
+
+function saveScore(subject, mode, percentage) {
     let history = JSON.parse(localStorage.getItem('ml_quiz_history') || '[]');
     history.push({
+        subject: subject,
         mode: mode,
         score: percentage,
         date: new Date().toLocaleDateString(),
@@ -147,11 +206,12 @@ function loadHistory() {
     reversed.forEach((h, idx) => {
         const realIdx = history.length - 1 - idx;
         const badgeClass = h.mode === 'easy' ? 'badge-easy' : 'badge-hard';
+        const subjectText = h.subject ? h.subject.toUpperCase() + ' - ' : '';
         const hasDetail = h.questions && h.answers;
         const clickAttr = hasDetail ? ' onclick="reviewHistory(' + realIdx + ')"' : '';
         const hoverClass = hasDetail ? ' hover:bg-[#f0f2f5] rounded-lg transition-colors' : '';
         list.innerHTML += '<li class="flex justify-between items-center px-2 -mx-2 rounded-lg' + hoverClass + '"' + (hasDetail ? ' style="cursor:pointer"' : '') + clickAttr + '>'
-            + '<span class="badge ' + badgeClass + ' text-xs">' + h.mode.toUpperCase() + '</span>'
+            + '<span class="badge ' + badgeClass + ' text-xs">' + subjectText + h.mode.toUpperCase() + '</span>'
             + '<span class="text-[#1a1a2e] font-bold text-sm">' + h.score + '%</span>'
             + '<span class="flex items-center gap-2"><span class="text-slate-400 text-xs">' + h.date + '</span>'
             + '<button onclick="event.stopPropagation(); deleteHistory(' + realIdx + ')" class="text-slate-300 hover:text-red-500 transition-colors" title="Hapus">'
@@ -206,8 +266,7 @@ function reviewHistory(index) {
     const percentage = Math.round((score / entry.questions.length) * 100);
 
     showScreen('results-screen');
-    document.getElementById('final-score-text').innerText = percentage + '%';
-    setTimeout(() => { document.getElementById('final-progress-bar').style.width = percentage + '%'; }, 100);
+    animateScore(percentage);
     document.getElementById('explanations-container').innerHTML = explHTML;
 }
 
