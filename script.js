@@ -4,9 +4,43 @@ let currentMode = '';
 let currentQIndex = 0;
 let userAnswers = [];
 
-window.onload = loadHistory;
+const availableQuizzes = [
+    { title: 'Quiz 1', description: 'Basic Concepts', easyFile: 'easy_quiz_1.json', hardFile: 'hard_quiz_1.json' },
+    { title: 'Quiz 2', description: 'Advanced Topics', easyFile: 'easy_quiz_2.json', hardFile: 'hard_quiz_2.json' }
+];
 
-function startQuiz(subject, mode) {
+window.onload = () => {
+    loadHistory();
+    renderQuizList();
+};
+
+function renderQuizList() {
+    const container = document.getElementById('quiz-list-container');
+    if (!container) return;
+    
+    let html = '';
+    availableQuizzes.forEach(quiz => {
+        html += `
+            <div class="subject-card rounded-xl p-4 border border-[#e9ecef] bg-[#f8f9fb] text-left hover:border-[#0f4c75] transition-colors">
+                <div class="flex justify-between items-center mb-3">
+                    <div>
+                        <h3 class="font-bold text-[#1a1a2e] text-base">${quiz.title}</h3>
+                        <p class="text-xs text-slate-500">${quiz.description}</p>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="startQuiz('${quiz.easyFile}', '${quiz.title}', 'easy')"
+                        class="btn-easy flex-1 py-2.5 rounded-xl font-semibold text-xs flex items-center justify-center">Easy</button>
+                    <button onclick="startQuiz('${quiz.hardFile}', '${quiz.title}', 'hard')"
+                        class="btn-hard flex-1 py-2.5 rounded-xl font-semibold text-xs flex items-center justify-center">Hard</button>
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+}
+
+function startQuiz(filename, subject, mode) {
     currentSubject = subject;
     currentMode = mode;
     currentQIndex = 0;
@@ -19,12 +53,16 @@ function startQuiz(subject, mode) {
 
     showScreen('quiz-screen');
 
-    const file = 'quiz/' + subject + '_' + mode + '.json';
-    fetch(file)
+    fetch('quiz/' + filename)
         .then(res => res.json())
         .then(data => {
             quizData = data;
             loadQuestion();
+        })
+        .catch(err => {
+            console.error("Error loading quiz:", err);
+            alert("Gagal memuat soal. Pastikan file JSON tersedia.");
+            resetQuiz();
         });
 }
 

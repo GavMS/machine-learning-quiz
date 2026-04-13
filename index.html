@@ -34,40 +34,8 @@
                 <p class="text-slate-500 text-sm mb-8 max-w-md mx-auto">Uji pemahaman konsep Machine Learning. <br>
                     Pilih tingkat kesulitan untuk memulai.</p>
 
-                <div class="flex flex-col gap-4 mb-8 max-w-md mx-auto">
-                    <!-- Subject: IF3270 -->
-                    <div
-                        class="subject-card rounded-xl p-4 border border-[#e9ecef] bg-[#f8f9fb] text-left hover:border-[#0f4c75] transition-colors">
-                        <div class="flex justify-between items-center mb-3">
-                            <div>
-                                <h3 class="font-bold text-[#1a1a2e] text-base">IF3270</h3>
-                                <p class="text-xs text-slate-500">Machine Learning</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-3">
-                            <button onclick="startQuiz('IF3270', 'easy')"
-                                class="btn-easy flex-1 py-2.5 rounded-xl font-semibold text-xs flex items-center justify-center">Easy</button>
-                            <button onclick="startQuiz('IF3270', 'hard')"
-                                class="btn-hard flex-1 py-2.5 rounded-xl font-semibold text-xs flex items-center justify-center">Hard</button>
-                        </div>
-                    </div>
-
-                    <!-- Subject: IN242 -->
-                    <div
-                        class="subject-card rounded-xl p-4 border border-[#e9ecef] bg-[#f8f9fb] text-left hover:border-[#0f4c75] transition-colors">
-                        <div class="flex justify-between items-center mb-3">
-                            <div>
-                                <h3 class="font-bold text-[#1a1a2e] text-base">IN242</h3>
-                                <p class="text-xs text-slate-500">Introduction to Machine Learning</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-3">
-                            <button onclick="startQuiz('IN242', 'easy')"
-                                class="btn-easy flex-1 py-2.5 rounded-xl font-semibold text-xs flex items-center justify-center">Easy</button>
-                            <button onclick="startQuiz('IN242', 'hard')"
-                                class="btn-hard flex-1 py-2.5 rounded-xl font-semibold text-xs flex items-center justify-center">Hard</button>
-                        </div>
-                    </div>
+                <div class="flex flex-col gap-4 mb-8 max-w-md mx-auto" id="quiz-list-container">
+                    <!-- Quiz cards will be injected here by script.js -->
                 </div>
 
                 <div class="history-card rounded-xl p-4 text-left">
