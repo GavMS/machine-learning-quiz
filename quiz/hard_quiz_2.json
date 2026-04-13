@@ -3,10 +3,10 @@
     "id": 1,
     "question": "Sebuah model dilatih dengan Batch Gradient Descent pada dataset 1 juta baris. Training sangat lambat. Alternatif apa yang paling tepat dan mengapa?",
     "options": {
-      "A": "Ganti ke Normal Equation karena lebih cepat dan tidak memerlukan iterasi untuk dataset besar sehingga efek regularisasi menjadi lebih kuat dan konsisten.",
-      "B": "Naikkan learning rate sebesar-besarnya agar Batch GD bisa konvergen lebih cepat dan ini telah divalidasi secara matematis melalui berbagai eksperimen.",
+      "A": "Ganti ke Normal Equation karena lebih cepat dan tidak memerlukan iterasi untuk dataset besar.",
+      "B": "Naikkan learning rate sebesar-besarnya agar Batch GD bisa konvergen lebih cepat.",
       "C": "Ganti ke Mini-batch GD dengan batch size 256 — lebih cepat karena tiap update hanya pakai sebagian data, dengan stabilitas lebih baik dari Stochastic GD.",
-      "D": "Kurangi jumlah data training menjadi 10.000 baris saja agar Batch GD lebih efisien dan ini telah divalidasi secara matematis melalui berbagai eksperimen."
+      "D": "Kurangi jumlah data training menjadi 10.000 baris saja agar Batch GD lebih efisien."
     },
     "answer": "C",
     "explanation": "Batch GD lambat karena tiap update pakai semua 1 juta baris. Normal Equation justru lebih lambat lagi untuk data besar (inversi matriks O(n³)). Mini-batch GD adalah solusi terbaik: tiap update hanya pakai 256 baris → jauh lebih cepat, gradient lebih stabil dari Stochastic GD."
@@ -15,10 +15,10 @@
     "id": 2,
     "question": "Model Linear Regression dilatih dengan Gradient Descent. Setelah 1000 iterasi, cost function masih tinggi dan tidak berubah signifikan. Apa penyebab paling mungkin dan solusinya?",
     "options": {
-      "A": "Model mengalami overfitting — tambahkan lebih banyak data training untuk menurunkan cost function sehingga efek regularisasi menjadi lebih kuat dan konsisten.",
+      "A": "Model mengalami overfitting — tambahkan lebih banyak data training untuk menurunkan cost function.",
       "B": "Learning rate terlalu kecil sehingga konvergensi sangat lambat — naikkan learning rate atau tambah iterasi, dan pastikan fitur sudah di-scale.",
-      "C": "Learning rate terlalu besar sehingga konvergen ke titik minimum yang salah — ganti algoritma karena pendekatan ini terbukti optimal dalam berbagai penelitian terkini.",
-      "D": "Dataset terlalu besar — kurangi jumlah fitur agar Gradient Descent bisa konvergen lebih cepat meskipun implementasinya membutuhkan tuning tambahan yang cermat."
+      "C": "Learning rate terlalu besar sehingga konvergen ke titik minimum yang salah — ganti algoritma.",
+      "D": "Dataset terlalu besar — kurangi jumlah fitur agar Gradient Descent bisa konvergen lebih cepat."
     },
     "answer": "B",
     "explanation": "Cost function tidak berubah signifikan setelah 1000 iterasi = tanda learning rate terlalu kecil (konvergensi sangat lambat) atau fitur belum di-scale (gradient tidak seimbang). Solusi: naikkan learning rate secara bertahap, tambah iterasi, dan wajib lakukan feature scaling sebelum Gradient Descent."
@@ -51,10 +51,10 @@
     "id": 5,
     "question": "Seorang mahasiswa melatih Logistic Regression dan mendapat hasil: training accuracy 95%, test accuracy 62%. Apa yang paling mungkin terjadi dan langkah perbaikan yang tepat?",
     "options": {
-      "A": "Model mengalami underfitting — tambah lebih banyak fitur atau naikkan kompleksitas model sehingga bias-variance tradeoff dapat dikontrol secara lebih presisi.",
-      "B": "Perbedaan 33% adalah hal normal dan tidak perlu ada tindakan perbaikan apapun karena pendekatan ini terbukti optimal dalam berbagai penelitian terkini.",
+      "A": "Model mengalami underfitting — tambah lebih banyak fitur atau naikkan kompleksitas model.",
+      "B": "Perbedaan 33% adalah hal normal dan tidak perlu ada tindakan perbaikan apapun.",
       "C": "Model mengalami overfitting — tambahkan regularisasi (parameter C lebih kecil di Scikit-learn) atau tambah data training.",
-      "D": "Model membutuhkan lebih banyak iterasi training karena belum konvergen dengan sempurna dan model yang dihasilkan jauh lebih interpretable dibanding alternatif lain."
+      "D": "Model membutuhkan lebih banyak iterasi training karena belum konvergen dengan sempurna."
     },
     "answer": "C",
     "explanation": "Training accuracy 95% vs test accuracy 62% = gap besar → overfitting. Model hafal data training termasuk noise. Solusi: tambahkan regularisasi (di Logistic Regression Scikit-learn: C=1/alpha, C lebih kecil = regularisasi lebih kuat), atau tambah data training yang lebih bervariasi."
@@ -76,9 +76,9 @@
     "question": "Normal Equation dan Gradient Descent sama-sama bisa menemukan θ optimal untuk Linear Regression. Kapan sebaiknya menggunakan Normal Equation dan kapan menggunakan Gradient Descent?",
     "options": {
       "A": "Normal Equation cocok untuk dataset kecil-menengah (fitur < ~10.000); Gradient Descent lebih baik untuk dataset sangat besar karena inversi matriks O(n³) sangat mahal.",
-      "B": "Gradient Descent selalu lebih baik karena Normal Equation tidak bisa menangani dataset apapun dan ini telah divalidasi secara matematis melalui berbagai eksperimen.",
-      "C": "Normal Equation selalu lebih baik karena memberikan solusi eksak tanpa perlu tuning hyperparameter sehingga bias-variance tradeoff dapat dikontrol secara lebih presisi.",
-      "D": "Pemilihan antara keduanya hanya bergantung pada preferensi programmer, tidak ada perbedaan performa dan ini telah divalidasi secara matematis melalui berbagai eksperimen."
+      "B": "Gradient Descent selalu lebih baik karena Normal Equation tidak bisa menangani dataset apapun.",
+      "C": "Normal Equation selalu lebih baik karena memberikan solusi eksak tanpa perlu tuning hyperparameter.",
+      "D": "Pemilihan antara keduanya hanya bergantung pada preferensi programmer, tidak ada perbedaan performa."
     },
     "answer": "A",
     "explanation": "Normal Equation: solusi langsung tanpa iterasi → tidak perlu tuning learning rate. Namun inversi matriks (XᵀX)⁻¹ berkomputasi O(n³) → sangat lambat saat jumlah fitur sangat banyak (ratusan ribu). Gradient Descent: iteratif → perlu tuning, tapi jauh lebih scalable untuk dataset/fitur besar."
@@ -87,10 +87,10 @@
     "id": 8,
     "question": "Elastic Net dengan r=0.5 dan alpha=1.0 digunakan pada dataset dengan banyak fitur berkorelasi tinggi. Mengapa Elastic Net lebih baik dari Lasso murni dalam kasus ini?",
     "options": {
-      "A": "Elastic Net selalu menghasilkan RMSE lebih rendah dari Lasso murni pada semua jenis dataset karena gradient descent menjamin konvergensi dalam kondisi ini.",
+      "A": "Elastic Net selalu menghasilkan RMSE lebih rendah dari Lasso murni pada semua jenis dataset.",
       "B": "Lasso bisa berperilaku tidak stabil saat fitur berkorelasi tinggi — cenderung pilih satu fitur acak dan buang sisanya. Elastic Net lebih stabil karena komponen Ridge-nya menangani korelasi.",
-      "C": "Elastic Net tidak memerlukan hyperparameter tuning sehingga lebih mudah diimplementasikan sehingga bias-variance tradeoff dapat dikontrol secara lebih presisi.",
-      "D": "Lasso tidak bisa menangani fitur berkorelasi sama sekali karena menghasilkan error matematika dan ini telah divalidasi secara matematis melalui berbagai eksperimen."
+      "C": "Elastic Net tidak memerlukan hyperparameter tuning sehingga lebih mudah diimplementasikan.",
+      "D": "Lasso tidak bisa menangani fitur berkorelasi sama sekali karena menghasilkan error matematika."
     },
     "answer": "B",
     "explanation": "Saat banyak fitur berkorelasi tinggi, Lasso cenderung memilih satu fitur secara 'acak' dan menghilangkan yang lain — padahal sebenarnya semuanya informative. Komponen Ridge dalam Elastic Net menstabilkan perilaku ini, cenderung mempertahankan fitur berkorelasi secara bersamaan dengan bobot lebih kecil."
@@ -123,17 +123,17 @@
     "id": 11,
     "question": "Seorang mahasiswa menggunakan Logistic Regression untuk deteksi penyakit langka (1% positif, 99% negatif). Model mencapai accuracy 99%. Apa masalah kritis pada evaluasi ini?",
     "options": {
-      "A": "Accuracy 99% sudah sangat baik dan tidak ada masalah dengan evaluasi model tersebut sehingga efek regularisasi menjadi lebih kuat dan konsisten.",
+      "A": "Accuracy 99% sudah sangat baik dan tidak ada masalah dengan evaluasi model tersebut.",
       "B": "Accuracy 99% menyesatkan — model mungkin hanya selalu prediksi negatif. Recall untuk kelas positif bisa mendekati 0%.",
       "C": "Masalahnya adalah Logistic Regression tidak cocok untuk data tidak seimbang sehingga harus diganti.",
-      "D": "Accuracy 99% berarti model underfit karena tidak berhasil menangkap pola kelas minoritas dan model yang dihasilkan jauh lebih interpretable dibanding alternatif lain."
+      "D": "Accuracy 99% berarti model underfit karena tidak berhasil menangkap pola kelas minoritas."
     },
     "answer": "B",
     "explanation": "Dengan 99% data negatif, model yang SELALU prediksi negatif mendapat accuracy 99% tanpa belajar apapun. Recall kelas positif = 0% (semua pasien sakit diprediksi sehat — sangat berbahaya!). Solusi: gunakan Precision, Recall, F1, dan AUC. Pertimbangkan Stratified CV + class_weight='balanced'."
   },
   {
     "id": 12,
-    "question": "Gradient Descent dijalankan tanpa feature scaling pada dataset dengan fitur income (0–100) dan age (0–80). Apa yang terjadi pada proses konvergensi?",
+    "question": "Gradient Descent dijalankan tanpa feature scaling pada dataset dengan fitur income (0–100.000) dan age (0–80). Apa yang terjadi pada proses konvergensi?",
     "options": {
       "A": "Konvergensi lebih cepat karena fitur dengan skala berbeda membantu Gradient Descent menjelajah lebih luas.",
       "B": "Model secara otomatis menormalisasi gradient sebelum update sehingga skala fitur tidak relevan.",
@@ -147,9 +147,9 @@
     "id": 13,
     "question": "Mengapa Log Loss digunakan sebagai cost function Logistic Regression, bukan MSE?",
     "options": {
-      "A": "MSE lebih mahal secara komputasi sehingga tidak praktis digunakan untuk model klasifikasi sehingga efek regularisasi menjadi lebih kuat dan konsisten.",
-      "B": "Log Loss secara matematis tidak bisa diturunkan (non-differentiable) sehingga lebih stabil untuk Gradient Descent karena gradient descent menjamin konvergensi dalam kondisi ini.",
-      "C": "Log Loss selalu menghasilkan gradient yang lebih besar sehingga konvergensi lebih cepat karena pendekatan ini terbukti optimal dalam berbagai penelitian terkini.",
+      "A": "MSE lebih mahal secara komputasi sehingga tidak praktis digunakan untuk model klasifikasi.",
+      "B": "Log Loss secara matematis tidak bisa diturunkan (non-differentiable) sehingga lebih stabil untuk Gradient Descent.",
+      "C": "Log Loss selalu menghasilkan gradient yang lebih besar sehingga konvergensi lebih cepat.",
       "D": "MSE pada output sigmoid menciptakan cost function non-convex dengan banyak local minimum. Log Loss menghasilkan cost function convex yang bisa dioptimasi Gradient Descent dengan andal."
     },
     "answer": "D",
@@ -157,7 +157,7 @@
   },
   {
     "id": 14,
-    "question": "Dataset housing memiliki fitur total_rooms (range 100–40,000) dengan distribusi right-skewed ekstrem. Urutan preprocessing yang paling tepat adalah?",
+    "question": "Dataset housing memiliki fitur total_rooms (range 100–40.000) dengan distribusi right-skewed ekstrem. Urutan preprocessing yang paling tepat adalah?",
     "options": {
       "A": "StandardScaler dulu → baru log transform, karena scaling harus selalu dilakukan sebelum transformasi lainnya.",
       "B": "Tidak perlu log transform — StandardScaler dirancang untuk menangani distribusi skewed tanpa preprocessing tambahan.",
@@ -169,90 +169,66 @@
   },
   {
     "id": 15,
-    "question": "GridSearchCV dengan param_grid = {'C': [0.001, 0.01, 0.1, 1, 10], 'penalty': ['l1', 'l2']} dan cv=10 dijalankan pada Logistic Regression. Berapa total model yang dilatih?",
-    "options": {
-      "A": "10 model karena cv=10 menentukan jumlah total model yang dilatih dalam proses ini.",
-      "B": "70 model karena 5 nilai C + 2 penalty + 10 fold dijumlahkan bukan dikalikan.",
-      "C": "100 model karena 5 nilai C × 2 penalty = 10 kombinasi × 10 fold = 100 model.",
-      "D": "50 model karena 5 nilai C × 10 fold tanpa memperhitungkan opsi penalty."
-    },
-    "answer": "C",
-    "explanation": "Total model = jumlah kombinasi × jumlah fold. Kombinasi: 5 nilai C × 2 penalty = 10 kombinasi. Setiap kombinasi dievaluasi dengan 10-fold CV = 10 × 10 = 100 model yang dilatih. Ini penting dipahami untuk estimasi waktu komputasi GridSearchCV."
-  },
-  {
-    "id": 16,
-    "question": "Model Polynomial Regression derajat 15 memiliki training RMSE = 500 dan validation RMSE = 45,000. Derajat 2 memiliki training RMSE = 8,000 dan validation RMSE = 9,000. Apa kesimpulan yang tepat?",
-    "options": {
-      "A": "Derajat 15 lebih baik karena training RMSE-nya jauh lebih kecil — ini menunjukkan model belajar lebih baik.",
-      "B": "Tidak bisa disimpulkan apa-apa karena perlu melihat test RMSE terlebih dahulu untuk keputusan akhir.",
-      "C": "Keduanya buruk karena training RMSE seharusnya sama dengan validation RMSE pada model yang baik.",
-      "D": "Derajat 2 lebih baik meskipun training RMSE-nya lebih besar karena generalisasi ke validation set jauh lebih baik."
-    },
-    "answer": "D",
-    "explanation": "Derajat 15: training RMSE 500 vs validation RMSE 45,000 → gap besar = overfitting parah. Derajat 2: training RMSE 8,000 vs validation RMSE 9,000 → gap kecil = model generalisasi dengan baik. Tujuan kita adalah performa baik pada data BARU (validation/test), bukan pada training data."
-  },
-  {
-    "id": 17,
-    "question": "Apa perbedaan cara Softmax Regression dan One-vs-Rest (OvR) menangani klasifikasi multiclass?",
+    "question": "Model Softmax Regression vs strategi OvR (One-vs-Rest) untuk 5-class classification. Apa perbedaan fundamental cara keduanya menghasilkan prediksi?",
     "options": {
       "A": "Softmax memodelkan semua kelas secara simultan dengan probabilitas yang saling bersaing (sum=1); OvR melatih K classifier terpisah yang tidak saling tahu satu sama lain.",
-      "B": "Keduanya identik secara matematis — OvR hanyalah implementasi yang lebih efisien dari Softmax karena pendekatan ini terbukti optimal dalam berbagai penelitian terkini.",
-      "C": "OvR lebih akurat dari Softmax karena setiap classifier fokus pada satu kelas tanpa distraksi dan model yang dihasilkan jauh lebih interpretable dibanding alternatif lain.",
-      "D": "Softmax hanya bisa digunakan untuk data berlabel biner, OvR untuk data dengan lebih dari 2 kelas karena gradient descent menjamin konvergensi dalam kondisi ini."
+      "B": "Keduanya identik secara matematis — OvR hanyalah implementasi yang lebih efisien dari Softmax.",
+      "C": "OvR lebih akurat dari Softmax karena setiap classifier fokus pada satu kelas tanpa distraksi.",
+      "D": "Softmax hanya bisa digunakan untuk data berlabel biner, OvR untuk data dengan lebih dari 2 kelas."
     },
     "answer": "A",
     "explanation": "Softmax: satu model, semua kelas dimodelkan bersama, probabilitas output menjumlah 1 (kompetitif). OvR: K model terpisah, setiap model tidak tahu tentang model lain, probabilitas output tidak terhubung. Softmax lebih koheren secara probabilistik dan sering lebih baik saat kelas memang saling eksklusif."
   },
   {
-    "id": 18,
+    "id": 16,
     "question": "Mahasiswa melatih dua model pada dataset sama: Model Ridge (alpha=100) dan Model Ridge (alpha=0.001). Mana yang mengalami underfitting dan mana yang berpotensi overfitting?",
     "options": {
-      "A": "Alpha=100 berpotensi overfitting karena regularisasi tinggi membuat model terlalu agresif belajar data sehingga bias-variance tradeoff dapat dikontrol secara lebih presisi.",
+      "A": "Alpha=100 berpotensi overfitting karena regularisasi tinggi membuat model terlalu agresif belajar data.",
       "B": "Alpha=100 cenderung underfitting (regularisasi terlalu kuat → model terlalu sederhana); alpha=0.001 berpotensi overfitting (hampir tidak ada regularisasi).",
-      "C": "Alpha=0.001 berpotensi underfitting karena regularisasi sangat kecil tidak cukup mengontrol model meskipun hal ini berlawanan dengan intuisi umum dalam statistik.",
-      "D": "Keduanya menghasilkan model identik karena Ridge selalu konvergen ke solusi yang sama meskipun implementasinya membutuhkan tuning tambahan yang cermat."
+      "C": "Alpha=0.001 berpotensi underfitting karena regularisasi sangat kecil tidak cukup mengontrol model.",
+      "D": "Keduanya menghasilkan model identik karena Ridge selalu konvergen ke solusi yang sama."
     },
     "answer": "B",
     "explanation": "Alpha besar (100) → penalti sangat kuat → semua bobot ditekan mendekati nol → model sangat sederhana → underfitting. Alpha kecil (0.001) → hampir tidak ada penalti → model bebas membesarkan bobot → mirip Linear Regression biasa → berpotensi overfitting. Pilih alpha optimal via GridSearchCV."
   },
   {
-    "id": 19,
+    "id": 17,
     "question": "Mahasiswa mengklaim 'Stochastic GD lebih baik dari Batch GD karena bisa keluar dari local minimum'. Seberapa valid klaim ini untuk Linear Regression?",
     "options": {
-      "A": "Sepenuhnya valid — Stochastic GD selalu lebih unggul karena kemampuan menghindari local minimum meskipun hal ini berlawanan dengan intuisi umum dalam statistik.",
+      "A": "Sepenuhnya valid — Stochastic GD selalu lebih unggul karena kemampuan menghindari local minimum.",
       "B": "Sepenuhnya tidak valid — local minimum tidak pernah terjadi di model apapun karena Gradient Descent selalu menemukan global minimum.",
       "C": "Klaim ini tidak relevan untuk Linear Regression karena cost function-nya convex — tidak ada local minimum. Namun valid untuk model non-convex seperti Neural Network.",
-      "D": "Klaim ini hanya berlaku saat learning rate lebih besar dari 0.1 terlepas dari jenis model sehingga bias-variance tradeoff dapat dikontrol secara lebih presisi."
+      "D": "Klaim ini hanya berlaku saat learning rate lebih besar dari 0.1 terlepas dari jenis model."
     },
     "answer": "C",
     "explanation": "Linear Regression → MSE cost function → selalu CONVEX → hanya ada satu global minimum, tidak ada local minimum. Kemampuan Stochastic GD keluar dari local minimum hanya relevan untuk cost function non-convex (seperti Neural Network). Untuk Linear Regression, keunggulan Stochastic GD lebih ke kecepatan komputasi pada data besar."
   },
   {
-    "id": 20,
+    "id": 18,
     "question": "Pipeline Scikit-learn berisi: [('imputer', SimpleImputer()), ('scaler', StandardScaler()), ('model', Ridge())]. Saat GridSearchCV memanggil pipeline ini dengan cv=5, apa yang terjadi di setiap fold?",
     "options": {
       "A": "Di setiap fold: imputer dan scaler di-fit pada training fold → ditransformasi ke training dan validation fold → Ridge dilatih → dievaluasi.",
-      "B": "Imputer dan scaler di-fit sekali di awal, lalu hasilnya diterapkan ke semua 5 fold secara bersamaan dan ini telah divalidasi secara matematis melalui berbagai eksperimen.",
-      "C": "Scaler di-fit pada seluruh dataset sebelum CV dimulai, imputer dan Ridge dijalankan di dalam setiap fold karena gradient descent menjamin konvergensi dalam kondisi ini.",
+      "B": "Imputer dan scaler di-fit sekali di awal, lalu hasilnya diterapkan ke semua 5 fold secara bersamaan.",
+      "C": "Scaler di-fit pada seluruh dataset sebelum CV dimulai, imputer dan Ridge dijalankan di dalam setiap fold.",
       "D": "Pipeline hanya menjalankan model Ridge di setiap fold — imputer dan scaler hanya dijalankan sekali sebelum CV."
     },
     "answer": "A",
     "explanation": "Inilah keunggulan utama Pipeline + GridSearchCV: di SETIAP fold, seluruh pipeline (imputer fit → scaler fit → model fit) dilakukan ulang hanya pada training fold. Hasilnya benar-benar mencegah data leakage — statistik imputer dan scaler tidak 'bocor' dari validation fold ke training fold."
   },
   {
-    "id": 21,
-    "question": "3-Fold CV Model A: RMSE [10,000; 11,500; 10,800]. Model B: RMSE [7,000; 18,000; 9,500]. Rata-rata Model B lebih kecil. Model mana yang sebaiknya dipilih untuk deployment?",
+    "id": 19,
+    "question": "3-Fold CV Model A: RMSE [10.000; 11.500; 10.800]. Model B: RMSE [7.000; 18.000; 9.500]. Rata-rata Model B lebih kecil. Model mana yang sebaiknya dipilih untuk deployment?",
     "options": {
-      "A": "Model B karena rata-rata RMSE-nya lebih kecil — ini adalah satu-satunya metrik yang relevan karena pendekatan ini terbukti optimal dalam berbagai penelitian terkini.",
-      "B": "Tidak bisa ditentukan hanya dari 3 fold — perlu minimal 10 fold untuk keputusan yang valid dan model yang dihasilkan jauh lebih interpretable dibanding alternatif lain.",
+      "A": "Model B karena rata-rata RMSE-nya lebih kecil — ini adalah satu-satunya metrik yang relevan.",
+      "B": "Tidak bisa ditentukan hanya dari 3 fold — perlu minimal 10 fold untuk keputusan yang valid.",
       "C": "Model A karena meskipun rata-ratanya lebih besar, variansi sangat kecil menunjukkan performa stabil dan dapat diandalkan.",
-      "D": "Model B karena RMSE minimum 7,000 di satu fold membuktikan potensi performa terbaiknya dan ini telah divalidasi secara matematis melalui berbagai eksperimen."
+      "D": "Model B karena RMSE minimum 7.000 di satu fold membuktikan potensi performa terbaiknya."
     },
     "answer": "C",
-    "explanation": "Model B: mean ≈ 11,500 tapi rentang 7,000–18,000 (variansi ekstrem). Model A: mean ≈ 10,767 dengan rentang 10,000–11,500 (sangat stabil). Di dunia nyata, model yang konsisten lebih dapat diandalkan. Model B mungkin sangat bagus di satu kondisi data tapi sangat buruk di kondisi lain — tidak predictable."
+    "explanation": "Model B: mean ≈ 11.500 tapi rentang 7.000–18.000 (variansi ekstrem). Model A: mean ≈ 10.767 dengan rentang 10.000–11.500 (sangat stabil). Di dunia nyata, model yang konsisten lebih dapat diandalkan. Model B mungkin sangat bagus di satu kondisi data tapi sangat buruk di kondisi lain — tidak predictable."
   },
   {
-    "id": 22,
+    "id": 20,
     "question": "Confusion Matrix menunjukkan: TP=45, FP=5, FN=30, TN=920. Hitung Precision dan Recall, lalu tentukan apakah model ini cocok untuk deteksi fraud bank.",
     "options": {
       "A": "Precision=90%, Recall=60%. Untuk deteksi fraud, model ini sudah cukup baik karena Precision tinggi.",
@@ -264,43 +240,43 @@
     "explanation": "Precision = TP/(TP+FP) = 45/(45+5) = 90%. Recall = TP/(TP+FN) = 45/(45+30) = 60%. Untuk deteksi fraud: FN (fraud tidak terdeteksi) sangat mahal. Recall 60% berarti 40% transaksi fraud lolos → berbahaya! Perlu turunkan threshold → naikkan Recall meskipun Precision sedikit turun."
   },
   {
-    "id": 23,
+    "id": 21,
     "question": "Mengapa OneHotEncoder lebih tepat dari Label Encoder untuk fitur 'ocean_proximity' yang berisi nilai: NEAR BAY, INLAND, NEAR OCEAN, ISLAND, <1H OCEAN?",
     "options": {
       "A": "OneHotEncoder lebih tepat karena ocean_proximity adalah data NOMINAL tanpa urutan — Label Encoding memunculkan urutan palsu yang menyesatkan model.",
       "B": "Label Encoder lebih tepat karena ocean_proximity memiliki urutan alami dari yang paling jauh ke paling dekat laut.",
       "C": "OneHotEncoder lebih tepat hanya karena menghasilkan lebih banyak kolom sehingga model punya lebih banyak informasi.",
-      "D": "Keduanya sama saja karena model linear bisa memahami bahwa angka pada Label Encoding tidak berarti urutan dan model yang dihasilkan jauh lebih interpretable dibanding alternatif lain."
+      "D": "Keduanya sama saja karena model linear bisa memahami bahwa angka pada Label Encoding tidak berarti urutan."
     },
     "answer": "A",
     "explanation": "ocean_proximity adalah data NOMINAL (tidak ada urutan bermakna antara INLAND, NEAR BAY, dll.). Label Encoding: INLAND=0, NEAR BAY=1, NEAR OCEAN=2 → model mengira NEAR OCEAN > NEAR BAY > INLAND secara numerik, yang tidak benar. OneHotEncoder membuat kolom binary terpisah untuk setiap kategori — tidak ada urutan palsu."
   },
   {
-    "id": 24,
-    "question": "Fitur rasio rooms_per_household ditambahkan ke model. Apakah fitur ini selalu lebih baik dari total_rooms? Apa kondisi yang membuatnya lebih atau kurang informatif?",
+    "id": 22,
+    "question": "Seorang mahasiswa menambahkan fitur baru: rooms_per_household = total_rooms / households. Model RMSE turun signifikan. Apa yang secara konseptual membuat fitur ini lebih informatif dari total_rooms saja?",
     "options": {
-      "A": "Rasio selalu lebih baik karena menghilangkan efek skala sehingga model pasti lebih akurat meskipun hal ini berlawanan dengan intuisi umum dalam statistik.",
-      "B": "Fitur mentah (total_rooms) selalu lebih baik karena menyimpan informasi absolut yang rasio tidak punya karena gradient descent menjamin konvergensi dalam kondisi ini.",
-      "C": "Keduanya identik secara matematis jika dataset memiliki jumlah household yang sama di semua baris sehingga efek regularisasi menjadi lebih kuat dan konsisten.",
-      "D": "Rasio lebih informatif saat proporsi antar variabel yang penting (kepadatan per rumah tangga), tapi fitur mentah bisa melengkapi saat nilai absolut juga relevan."
+      "A": "Fitur rasio selalu lebih baik dari fitur mentah karena menghilangkan efek skala secara menyeluruh.",
+      "B": "rooms_per_household mengubah informasi absolut menjadi proporsi — menangkap kepadatan per rumah tangga yang lebih relevan untuk prediksi harga rumah.",
+      "C": "Fitur baru itu lebih baik karena nama variabelnya lebih deskriptif sehingga model lebih mudah menginterpretasinya.",
+      "D": "Rasio lebih baik hanya karena nilainya lebih kecil dan lebih mudah diproses oleh Gradient Descent."
     },
-    "answer": "D",
-    "explanation": "rooms_per_household menangkap kepadatan (lebih representatif untuk prediksi harga). Tapi total_rooms bisa masih relevan: area dengan 1000 kamar total mungkin punya karakteristik berbeda dari area dengan 100 kamar, meski rasio per household sama. Idealnya: pertahankan keduanya dan biarkan model memilih."
+    "answer": "B",
+    "explanation": "total_rooms saja ambigu: 100 kamar untuk 100 household (1 kamar/HH) vs 100 kamar untuk 10 household (10 kamar/HH) sangat berbeda secara ekonomi. rooms_per_household menangkap kepadatan yang sesungguhnya relevan untuk harga properti. Feature engineering seperti ini sering menghasilkan peningkatan model yang signifikan."
   },
   {
-    "id": 25,
-    "question": "neg_root_mean_squared_error = -47,523 pada GridSearchCV. Mahasiswa lain mendapat -39,801. Model siapa yang lebih baik dan mengapa?",
+    "id": 23,
+    "question": "neg_root_mean_squared_error = -47.523 pada GridSearchCV. Mahasiswa lain mendapat -39.801. Model siapa yang lebih baik dan mengapa?",
     "options": {
-      "A": "Mahasiswa kedua lebih baik karena -39,801 lebih besar dari -47,523 dalam nilai numerik negatif.",
-      "B": "Mahasiswa pertama lebih baik karena nilai absolutnya (-47,523) lebih besar dari -39,801.",
+      "A": "Mahasiswa kedua lebih baik karena -39.801 lebih besar dari -47.523 dalam nilai numerik negatif.",
+      "B": "Mahasiswa pertama lebih baik karena nilai absolutnya (-47.523) lebih besar dari -39.801.",
       "C": "Tidak bisa dibandingkan karena skor negatif menunjukkan kedua model error pada konfigurasi yang sama.",
       "D": "Keduanya sama karena neg_RMSE hanya konvensi teknis tanpa makna perbandingan antar model."
     },
     "answer": "A",
-    "explanation": "neg_RMSE = -RMSE. Scikit-learn memaksimalkan skor. -39,801 > -47,523 secara numerik → model kedua dipilih. Maknanya: RMSE model kedua = 39,801 vs RMSE model pertama = 47,523. RMSE lebih kecil = error lebih kecil = model lebih baik. Model mahasiswa kedua lebih baik."
+    "explanation": "neg_RMSE = -RMSE. Scikit-learn memaksimalkan skor. -39.801 > -47.523 secara numerik → model kedua dipilih. Maknanya: RMSE model kedua = 39.801 vs RMSE model pertama = 47.523. RMSE lebih kecil = error lebih kecil = model lebih baik. Model mahasiswa kedua lebih baik."
   },
   {
-    "id": 26,
+    "id": 24,
     "question": "OvR (One-vs-Rest) digunakan untuk 5-class classification. Semua 5 binary classifier memberikan probabilitas > 0.5. Bagaimana model menentukan prediksi akhir?",
     "options": {
       "A": "Model gagal memberikan prediksi karena ambiguitas — semua kelas 'menang' secara bersamaan.",
@@ -312,23 +288,23 @@
     "explanation": "Ini adalah kelemahan OvR yang disebutkan dalam teori. Saat semua classifier memberikan skor > 0.5, terjadi ambiguitas. Solusi: OvR menggunakan confidence score (real-valued), bukan hanya threshold 0.5. Kelas dengan skor tertinggi di antara semua K classifier yang menjadi prediksi akhir."
   },
   {
-    "id": 27,
+    "id": 25,
     "question": "ROC AUC model A = 0.95, model B = 0.72. Dataset memiliki 5% positif dan 95% negatif. Interpretasi mana yang paling akurat?",
     "options": {
-      "A": "Model A lebih baik dan langsung bisa dideploy karena AUC 0.95 sudah mendekati sempurna dan ini telah divalidasi secara matematis melalui berbagai eksperimen.",
-      "B": "Model B lebih baik karena AUC 0.72 menunjukkan model tidak overfit sedangkan 0.95 terlalu tinggi sehingga efek regularisasi menjadi lebih kuat dan konsisten.",
-      "C": "AUC tidak relevan untuk dataset tidak seimbang — harus diganti dengan metrik lain sepenuhnya dan model yang dihasilkan jauh lebih interpretable dibanding alternatif lain.",
+      "A": "Model A lebih baik dan langsung bisa dideploy karena AUC 0.95 sudah mendekati sempurna.",
+      "B": "Model B lebih baik karena AUC 0.72 menunjukkan model tidak overfit sedangkan 0.95 terlalu tinggi.",
+      "C": "AUC tidak relevan untuk dataset tidak seimbang — harus diganti dengan metrik lain sepenuhnya.",
       "D": "Model A jauh lebih baik dalam membedakan kelas positif dan negatif. Namun threshold masih perlu dioptimalkan berdasarkan biaya FP vs FN dalam konteks bisnis."
     },
     "answer": "D",
     "explanation": "AUC 0.95 memang sangat baik — model A jauh lebih baik dalam ranking/diskriminasi. Namun AUC tinggi tidak berarti threshold 0.5 sudah optimal. Pada data tidak seimbang dengan konsekuensi FN berbeda dari FP (misal: deteksi penyakit), threshold perlu dioptimalkan berdasarkan biaya bisnis/medis yang sebenarnya."
   },
   {
-    "id": 28,
+    "id": 26,
     "question": "Mahasiswa menggunakan Polynomial Regression derajat 10 dengan Ridge alpha=1000. Training RMSE dan validation RMSE keduanya sama tinggi. Apa diagnosis yang paling tepat?",
     "options": {
       "A": "Model mengalami underfitting karena alpha=1000 terlalu besar — regularisasi terlalu kuat menekan semua bobot mendekati nol.",
-      "B": "Model mengalami overfitting karena derajat 10 terlalu tinggi untuk semua jenis dataset sehingga efek regularisasi menjadi lebih kuat dan konsisten.",
+      "B": "Model mengalami overfitting karena derajat 10 terlalu tinggi untuk semua jenis dataset.",
       "C": "Model sudah optimal — training dan validation error yang sama tinggi menandakan model generalisasi dengan sempurna.",
       "D": "Derajat polinomial terlalu rendah — tambahkan derajat lebih tinggi agar model bisa fit data dengan lebih baik."
     },
@@ -336,7 +312,7 @@
     "explanation": "Training dan validation RMSE sama-sama tinggi = underfitting. Penyebab: alpha=1000 → regularisasi ekstrem → semua bobot ditekan mendekati nol → model hampir konstan, tidak bisa menangkap pola apapun. Solusi: turunkan alpha secara drastis. Derajat 10 sudah cukup fleksibel jika regularisasi tidak terlalu kuat."
   },
   {
-    "id": 29,
+    "id": 27,
     "question": "Seorang data scientist melatih model klasifikasi email spam dengan threshold 0.5. Banyak email penting (ham) masuk ke folder spam (FP tinggi). Apa penyesuaian yang paling tepat?",
     "options": {
       "A": "Naikkan threshold (misal 0.7) → model hanya mengklasifikasikan email sebagai spam jika sangat yakin → FP berkurang.",
@@ -348,15 +324,159 @@
     "explanation": "FP tinggi = terlalu banyak email ham dikira spam. Solusi: naikkan threshold → model membutuhkan keyakinan lebih tinggi sebelum melabel 'spam'. Trade-off: Precision naik (FP turun) tapi Recall turun (lebih banyak spam lolos). Ini adalah precision-recall tradeoff — pilih berdasarkan mana yang lebih mahal: spam lolos atau ham terblokir."
   },
   {
-    "id": 30,
+    "id": 28,
     "question": "Seorang mahasiswa berencana melatih 5 model berbeda, memilih yang terbaik berdasarkan test set, lalu melaporkan performa test set sebagai estimasi performa model. Apa masalah metodologis yang serius?",
     "options": {
-      "A": "Tidak ada masalah — memilih model terbaik berdasarkan test set adalah praktik standar yang direkomendasikan sehingga efek regularisasi menjadi lebih kuat dan konsisten.",
-      "B": "Masalahnya adalah 5 model terlalu sedikit — minimal 20 model harus dibandingkan untuk estimasi yang valid meskipun hal ini berlawanan dengan intuisi umum dalam statistik.",
+      "A": "Tidak ada masalah — memilih model terbaik berdasarkan test set adalah praktik standar yang direkomendasikan.",
+      "B": "Masalahnya adalah 5 model terlalu sedikit — minimal 20 model harus dibandingkan untuk estimasi yang valid.",
       "C": "Test set digunakan berkali-kali untuk memilih model → optimistic bias — performa yang dilaporkan overestimate performa sesungguhnya di data nyata.",
-      "D": "Setiap model seharusnya dilatih dengan hyperparameter yang sama agar perbandingan adil karena pendekatan ini terbukti optimal dalam berbagai penelitian terkini."
+      "D": "Setiap model seharusnya dilatih dengan hyperparameter yang sama agar perbandingan adil."
     },
     "answer": "C",
     "explanation": "Menggunakan test set untuk memilih model = data leakage implisit. Model yang 'menang' mungkin hanya kebetulan cocok dengan test set tersebut. Estimasi performa menjadi terlalu optimis. Solusi yang benar: gunakan validation set (atau CV) untuk memilih model, simpan test set hanya untuk evaluasi FINAL sekali saja."
+  },
+  {
+    "id": 29,
+    "question": "Seorang mahasiswa membuat fitur baru 'income_per_room' = median_income / total_rooms. Namun R² model justru turun. Apa penyebab paling masuk akal?",
+    "options": {
+      "A": "Fitur rasio selalu merusak model regresi dan tidak pernah seharusnya digunakan.",
+      "B": "Fitur baru secara semantik tidak bermakna — median_income dalam puluhan ribu USD dibagi total_rooms tanpa satuan yang logis, menghasilkan noise bukan sinyal.",
+      "C": "Masalahnya adalah fitur baru tidak di-scaling sebelum dimasukkan ke model.",
+      "D": "GridSearchCV perlu dijalankan ulang karena fitur baru otomatis mengubah hyperparameter optimal."
+    },
+    "answer": "B",
+    "explanation": "Tidak semua rasio bermakna. income_per_room menggabungkan dua variabel yang secara konsep tidak relevan untuk dibagi satu sama lain — hasilnya adalah angka tanpa interpretasi ekonomi yang jelas. Feature engineering yang baik membutuhkan domain knowledge, bukan sekadar operasi matematika acak antar fitur."
+  },
+  {
+    "id": 30,
+    "question": "Model A dilatih pada California Housing. Training RMSE=42.000, CV RMSE=43.500. Model B: Training RMSE=38.000, CV RMSE=57.000. Apa kesimpulan yang tepat dan model mana yang lebih layak untuk deployment?",
+    "options": {
+      "A": "Model B lebih baik karena training RMSE-nya lebih kecil, menandakan model belajar lebih optimal.",
+      "B": "Model A lebih layak karena gap kecil antara training dan CV RMSE menunjukkan generalisasi baik tanpa overfitting.",
+      "C": "Tidak bisa dibandingkan karena RMSE bukan metrik yang tepat untuk dataset dengan outlier.",
+      "D": "Kedua model sama buruknya dan harus diganti dengan model lain yang lebih kompleks."
+    },
+    "answer": "B",
+    "explanation": "Model A: training-CV gap = 1.500 (sangat kecil) → generalisasi sangat baik, tidak ada overfitting. Model B: training-CV gap = 19.000 (besar) → overfitting signifikan, model menghafal training data. Dalam deployment, yang penting adalah performa di data baru → Model A jauh lebih andal meskipun training RMSE-nya lebih besar."
+  },
+  {
+    "id": 31,
+    "question": "GridSearchCV dijalankan dengan param_grid = {'alpha': [0.01, 0.1, 1, 10, 100]} dan cv=5 pada Ridge Regression. Berapa total model yang dilatih selama proses ini?",
+    "options": {
+      "A": "5 model, karena hanya ada 5 nilai alpha yang dicoba.",
+      "B": "25 model, karena 5 nilai alpha × 5 fold = 25 kombinasi training.",
+      "C": "10 model, karena setiap nilai alpha dilatih 2 kali: sekali training, sekali validation.",
+      "D": "1 model, karena GridSearchCV hanya melatih model terbaik di akhir."
+    },
+    "answer": "B",
+    "explanation": "GridSearchCV: setiap kombinasi hyperparameter dievaluasi dengan cross-validation cv=5. Artinya setiap nilai alpha dilatih 5 kali (pada 5 fold yang berbeda). Total = 5 nilai alpha × 5 fold = 25 model. Setelah itu, model terbaik di-refit pada seluruh training data."
+  },
+  {
+    "id": 32,
+    "question": "Dua model klasifikasi untuk deteksi kanker: Model A (Precision=0.95, Recall=0.60), Model B (Precision=0.70, Recall=0.90). Dari perspektif medis, model mana yang lebih diprioritaskan dan mengapa?",
+    "options": {
+      "A": "Model A karena Precision lebih tinggi — lebih penting memastikan diagnosis positif benar-benar kanker.",
+      "B": "Keduanya setara karena F1-Score keduanya hampir sama sehingga tidak ada perbedaan signifikan.",
+      "C": "Model B karena Recall lebih tinggi — dalam deteksi kanker, terlewatnya kasus kanker (FN) jauh lebih berbahaya dari false alarm (FP).",
+      "D": "Model A lebih baik karena Precision yang tinggi mengurangi beban tes lanjutan yang tidak perlu."
+    },
+    "answer": "C",
+    "explanation": "Dalam konteks medis: FN (kanker tidak terdeteksi) = pasien yang sebenarnya sakit diprediksi sehat → tidak mendapat pengobatan → konsekuensi fatal. FP (false alarm) = pasien sehat didiagnosis kanker → tes lanjutan, tapi tidak berbahaya nyawanya. Oleh karena itu Recall diprioritaskan. Model B dengan Recall 90% jauh lebih aman."
+  },
+  {
+    "id": 33,
+    "question": "Mahasiswa menggunakan PolynomialFeatures(degree=3) pada dataset dengan 10 fitur. Berapa total fitur baru yang dihasilkan (termasuk bias term)?",
+    "options": {
+      "A": "30 fitur karena setiap fitur dipangkat 3 (10 × 3).",
+      "B": "286 fitur karena PolynomialFeatures degree=3 menghasilkan kombinasi fitur-fitur hingga derajat 3.",
+      "C": "40 fitur karena hanya menambahkan x² dan x³ untuk setiap fitur tanpa interaksi.",
+      "D": "1000 fitur karena setiap kombinasi 3 fitur dari 10 fitur menghasilkan satu fitur baru."
+    },
+    "answer": "B",
+    "explanation": "PolynomialFeatures(degree=3) pada n=10 fitur menghasilkan C(10+3, 3) = C(13,3) = 286 fitur (termasuk bias). Ini mencakup: fitur asli, kuadrat (x²), kubik (x³), dan semua interaksi antar fitur hingga derajat 3 (x₁x₂, x₁x₂x₃, dst.). Eksplosifnya jumlah fitur ini adalah alasan utama kenapa Polynomial Regression degree tinggi mudah overfitting."
+  },
+  {
+    "id": 34,
+    "question": "Seorang mahasiswa melatih model regresi dan mendapat R² = 0.85 di training set, R² = 0.84 di test set. Apa yang bisa disimpulkan?",
+    "options": {
+      "A": "Model mengalami overfitting karena R² training lebih besar dari R² test.",
+      "B": "Model generalisasi dengan sangat baik — gap training-test sangat kecil dan R² 0.84 di test berarti model menjelaskan 84% variansi data.",
+      "C": "R² 0.85 dan 0.84 terlalu rendah — model yang baik harus mencapai minimal R² = 0.95.",
+      "D": "Tidak bisa menyimpulkan apapun dari R² — perlu lihat RMSE juga untuk evaluasi lengkap."
+    },
+    "answer": "B",
+    "explanation": "R² training = 0.85, R² test = 0.84 → gap hanya 0.01 → hampir tidak ada overfitting sama sekali. Model menjelaskan 84% variansi data test, yang umumnya sangat baik untuk prediksi harga properti. Gap kecil antara training dan test adalah tanda generalisasi yang sehat."
+  },
+  {
+    "id": 35,
+    "question": "Mengapa Stratified Cross-Validation penting untuk dataset klasifikasi yang tidak seimbang (imbalanced)?",
+    "options": {
+      "A": "Karena Stratified CV secara otomatis melakukan oversampling kelas minoritas di setiap fold.",
+      "B": "Karena Stratified CV memastikan proporsi kelas di setiap fold sama dengan proporsi di dataset asli, sehingga setiap fold representatif.",
+      "C": "Karena Stratified CV lebih cepat dari regular CV karena tidak perlu mengurutkan data terlebih dahulu.",
+      "D": "Karena Stratified CV menggunakan semua data tanpa pembagian, sehingga estimasi lebih akurat."
+    },
+    "answer": "B",
+    "explanation": "Pada dataset imbalanced (misal 95% negatif, 5% positif), regular CV bisa membuat beberapa fold hampir tidak punya data kelas positif sama sekali. Stratified CV memastikan setiap fold memiliki proporsi kelas yang sama → setiap fold representatif → estimasi performa lebih valid dan tidak menyesatkan."
+  },
+  {
+    "id": 36,
+    "question": "Mahasiswa A menggunakan train_test_split biasa lalu fit StandardScaler pada seluruh data (train+test), kemudian scaling. Mahasiswa B menggunakan Pipeline yang fit hanya pada training data. Siapa yang metodologinya benar dan apa konsekuensi dari kesalahan Mahasiswa A?",
+    "options": {
+      "A": "Mahasiswa A benar — fitting scaler pada lebih banyak data memberikan estimasi statistik yang lebih akurat.",
+      "B": "Keduanya benar — perbedaannya hanya teknis dan tidak mempengaruhi hasil evaluasi.",
+      "C": "Mahasiswa B benar. Mahasiswa A melakukan data leakage — mean dan std test set masuk ke proses scaling training → evaluasi performa menjadi terlalu optimis.",
+      "D": "Mahasiswa A benar karena StandardScaler dirancang untuk di-fit pada seluruh dataset."
+    },
+    "answer": "C",
+    "explanation": "Mahasiswa A melakukan data leakage klasik: informasi statistik (mean, std) dari test set ikut mempengaruhi transformasi training data. Akibatnya: model 'melihat' sekilas informasi test set → performa evaluasi menjadi terlalu optimis dibanding performa nyata. Mahasiswa B menggunakan Pipeline dengan benar: scaler di-fit hanya pada training fold di setiap iterasi CV."
+  },
+  {
+    "id": 37,
+    "question": "Sebuah model Logistic Regression untuk deteksi kanker paru menghasilkan threshold default 0.5 dengan: Precision=85%, Recall=55%. Dokter menginginkan Recall minimal 90%. Apa strategi yang tepat?",
+    "options": {
+      "A": "Latih model baru dari awal karena threshold tidak bisa diubah setelah training selesai.",
+      "B": "Turunkan threshold (misal ke 0.2–0.3) — model akan lebih 'mudah' melabel positif → Recall naik, Precision turun.",
+      "C": "Naikkan threshold ke 0.8 → model lebih selektif → Recall akan naik karena hanya kasus paling jelas yang diprediksi positif.",
+      "D": "Ubah algoritma ke Ridge Regression karena Logistic Regression tidak bisa mengontrol Recall."
+    },
+    "answer": "B",
+    "explanation": "Threshold default 0.5 terlalu ketat untuk konteks medis. Dengan menurunkan threshold (misal 0.2): instance yang sebelumnya diprediksi negatif (probabilitas 0.2–0.5) kini diprediksi positif → lebih banyak kasus kanker tertangkap → Recall naik. Trade-off: lebih banyak false alarm (Precision turun), tapi dalam deteksi kanker ini adalah pertukaran yang dapat diterima."
+  },
+  {
+    "id": 38,
+    "question": "Mahasiswa menjalankan GridSearchCV dengan param_grid yang besar (1000 kombinasi) dan cv=10. Proses berjalan sangat lambat. Apa alternatif yang lebih efisien dengan hasil yang mendekati optimal?",
+    "options": {
+      "A": "Kurangi cv menjadi cv=2, karena perbedaan hasil antara cv=2 dan cv=10 tidak signifikan.",
+      "B": "Gunakan RandomizedSearchCV dengan n_iter=50 — mencoba 50 kombinasi acak dari ruang hyperparameter → jauh lebih cepat, sering mendekati hasil GridSearchCV.",
+      "C": "Hapus sebagian parameter dari grid sampai tersisa 10 kombinasi saja.",
+      "D": "Jalankan GridSearchCV tanpa cross-validation (cv=1) untuk menghemat waktu komputasi."
+    },
+    "answer": "B",
+    "explanation": "RandomizedSearchCV: tidak mencoba semua kombinasi, melainkan mengambil n_iter sampel acak dari distribusi hyperparameter. Dengan 1000 kombinasi × cv=10 = 10.000 model dalam GridSearchCV vs hanya 50 × 10 = 500 model dalam RandomizedSearchCV. Penelitian menunjukkan bahwa RandomizedSearchCV sering menemukan kombinasi yang hampir optimal dengan waktu jauh lebih singkat."
+  },
+  {
+    "id": 39,
+    "question": "Model prediksi harga rumah memiliki RMSE = 50.000 pada dataset dengan harga rata-rata 200.000 dan 2.000.000. Apakah RMSE ini baik atau buruk?",
+    "options": {
+      "A": "Buruk, karena RMSE 50.000 selalu terlalu besar untuk model regresi yang berkualitas.",
+      "B": "Tidak bisa dinilai hanya dari angka RMSE tanpa konteks — perlu dibandingkan dengan baseline, rentang harga, dan MAE.",
+      "C": "Baik, karena RMSE 50.000 lebih kecil dari rata-rata harga 200.000 sehingga model pasti akurat.",
+      "D": "Buruk, karena RMSE yang baik harus selalu di bawah 1% dari nilai rata-rata target."
+    },
+    "answer": "B",
+    "explanation": "RMSE 50.000 ambigu tanpa konteks: jika harga rata-rata 200.000 → error rata-rata 25% dari harga → mungkin buruk. Jika harga rata-rata 2.000.000 → error hanya 2.5% → mungkin sangat baik. Selalu bandingkan RMSE dengan: (1) baseline model sederhana, (2) rentang nilai target, (3) MAE untuk melihat sensitivitas outlier."
+  },
+  {
+    "id": 40,
+    "question": "Seorang mahasiswa mengaplikasikan Logistic Regression pada dataset multiclass (10 kelas) menggunakan Scikit-learn dengan parameter default. Secara default, strategi multiclass apa yang digunakan?",
+    "options": {
+      "A": "One-vs-One (OvO) karena lebih akurat untuk semua jenis dataset multiclass.",
+      "B": "Softmax Regression (Multinomial) secara default untuk solver yang mendukung, atau OvR untuk solver lainnya.",
+      "C": "Selalu One-vs-Rest (OvR) tanpa memperhatikan solver yang digunakan.",
+      "D": "Scikit-learn tidak mendukung multiclass pada Logistic Regression — harus menggunakan SVM."
+    },
+    "answer": "B",
+    "explanation": "Scikit-learn LogisticRegression: multi_class='auto' (default). Untuk solver='lbfgs', 'newton-cg', 'sag', 'saga' → otomatis menggunakan Multinomial (Softmax) untuk multiclass. Untuk solver='liblinear' → menggunakan OvR. Penting dipahami agar bisa memilih strategi multiclass yang tepat secara eksplisit via parameter multi_class."
   }
 ]

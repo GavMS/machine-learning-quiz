@@ -292,7 +292,7 @@
     "question": "Apa perbedaan RMSE dan MAE dalam mengukur error model?",
     "options": {
       "A": "RMSE lebih sensitif terhadap outlier karena error dikuadratkan, MAE memperlakukan semua error setara.",
-      "B": "RMSE lebih cocok untuk klasifikasi, MAE lebih cocok untuk regresi sehingga tidak diperlukan langkah preprocessing tambahan.",
+      "B": "RMSE lebih cocok untuk klasifikasi, MAE lebih cocok untuk regresi.",
       "C": "MAE lebih sensitif terhadap outlier karena menggunakan nilai absolut yang memperbesar error besar.",
       "D": "Keduanya identik secara matematis, perbedaannya hanya pada nama dan notasi rumusnya."
     },
@@ -328,8 +328,8 @@
     "question": "Apa perbedaan strategi One-vs-Rest (OvR) dan One-vs-One (OvO) untuk multiclass classification?",
     "options": {
       "A": "OvR melatih K classifier (satu per kelas vs sisa), OvO melatih K×(K-1)/2 classifier (satu per pasang kelas).",
-      "B": "OvR melatih K×(K-1)/2 classifier, OvO melatih K classifier untuk K kelas sehingga tidak diperlukan langkah preprocessing tambahan.",
-      "C": "OvR hanya bisa digunakan dengan Decision Tree, OvO hanya bisa digunakan dengan SVM sehingga proses training menjadi lebih cepat dan hemat memori.",
+      "B": "OvR melatih K×(K-1)/2 classifier, OvO melatih K classifier untuk K kelas.",
+      "C": "OvR hanya bisa digunakan dengan Decision Tree, OvO hanya bisa digunakan dengan SVM.",
       "D": "Tidak ada perbedaan signifikan — keduanya selalu menghasilkan jumlah model yang sama."
     },
     "answer": "A",
@@ -358,5 +358,125 @@
     },
     "answer": "C",
     "explanation": "ROC Curve memplot TPR (Recall) di sumbu Y vs FPR di sumbu X untuk berbagai threshold. AUC (Area Under Curve) mengukur seberapa baik classifier — mendekati 1.0 = sangat baik, 0.5 = seburuk tebakan acak."
+  },
+  {
+    "id": 31,
+    "question": "Apa yang dimaksud dengan Underfitting pada sebuah model?",
+    "options": {
+      "A": "Model terlalu kompleks sehingga menghafal semua data training beserta noise-nya.",
+      "B": "Model terlalu sederhana sehingga tidak mampu menangkap pola penting dalam data.",
+      "C": "Model yang menggunakan terlalu banyak fitur sehingga training menjadi sangat lambat.",
+      "D": "Model yang dilatih terlalu lama sehingga bobot-bobotnya menjadi tidak stabil."
+    },
+    "answer": "B",
+    "explanation": "Underfitting terjadi saat model terlalu sederhana untuk menangkap pola yang ada dalam data. Hasilnya: training error dan test error keduanya tinggi. Solusi: tambah kompleksitas model (misalnya naikkan derajat polinomial atau kurangi regularisasi)."
+  },
+  {
+    "id": 32,
+    "question": "Apa itu Precision dalam konteks klasifikasi?",
+    "options": {
+      "A": "Proporsi dari semua instance positif yang berhasil diprediksi dengan benar oleh model.",
+      "B": "Proporsi prediksi positif yang benar-benar positif (dari semua yang diprediksi positif).",
+      "C": "Rata-rata dari Recall dan akurasi model pada semua kelas yang ada.",
+      "D": "Jumlah total prediksi benar dibagi jumlah total prediksi yang dilakukan model."
+    },
+    "answer": "B",
+    "explanation": "Precision = TP / (TP + FP). Artinya: dari semua instance yang diprediksi positif oleh model, berapa proporsi yang memang benar-benar positif? Precision tinggi berarti model jarang salah menandai instance negatif sebagai positif."
+  },
+  {
+    "id": 33,
+    "question": "Apa itu Recall (Sensitivity) dalam konteks klasifikasi?",
+    "options": {
+      "A": "Proporsi prediksi positif yang benar-benar positif dari semua prediksi positif model.",
+      "B": "Proporsi dari semua instance positif yang berhasil dideteksi oleh model.",
+      "C": "Rata-rata dari Precision dan akurasi yang digunakan sebagai metrik gabungan.",
+      "D": "Jumlah prediksi benar dibagi jumlah total data dalam test set."
+    },
+    "answer": "B",
+    "explanation": "Recall = TP / (TP + FN). Artinya: dari semua instance yang sebenarnya positif, berapa yang berhasil dideteksi model? Recall tinggi sangat penting di skenario medis atau fraud detection, di mana FN (positif yang terlewat) sangat berbahaya."
+  },
+  {
+    "id": 34,
+    "question": "Apa yang dimaksud dengan F1-Score?",
+    "options": {
+      "A": "Rata-rata aritmatika dari Precision dan Recall model klasifikasi.",
+      "B": "Rata-rata harmonik dari Precision dan Recall yang memberikan bobot seimbang pada keduanya.",
+      "C": "Metrik yang hanya digunakan ketika dataset seimbang antara kelas positif dan negatif.",
+      "D": "Nilai akurasi yang sudah dikoreksi untuk menghilangkan efek dari kelas mayoritas."
+    },
+    "answer": "B",
+    "explanation": "F1-Score = 2 × (Precision × Recall) / (Precision + Recall). Rata-rata harmonik memberikan hukuman lebih besar jika salah satu dari Precision atau Recall sangat rendah, sehingga F1 mencerminkan keseimbangan keduanya."
+  },
+  {
+    "id": 35,
+    "question": "Mengapa feature scaling penting sebelum menjalankan Gradient Descent?",
+    "options": {
+      "A": "Karena Gradient Descent tidak bisa berjalan sama sekali tanpa feature scaling.",
+      "B": "Karena scaling mempercepat konvergensi — cost function menjadi lebih simetris sehingga gradient lebih terarah.",
+      "C": "Karena scaling secara otomatis menghilangkan outlier dari dataset sebelum training.",
+      "D": "Karena Scikit-learn mewajibkan scaling sebelum setiap model dilatih tanpa terkecuali."
+    },
+    "answer": "B",
+    "explanation": "Tanpa scaling, fitur dengan range besar mendominasi gradient → cost function berbentuk elips memanjang → Gradient Descent berjalan zigzag dan lambat. Dengan scaling, cost function lebih simetris (bundar) → konvergensi jauh lebih cepat dan langsung menuju minimum."
+  },
+  {
+    "id": 36,
+    "question": "Apa perbedaan StandardScaler dan MinMaxScaler?",
+    "options": {
+      "A": "StandardScaler mengubah data ke rentang [0, 1]; MinMaxScaler mengubah ke distribusi normal.",
+      "B": "StandardScaler menskalakan berdasarkan mean dan std (z-score); MinMaxScaler menskalakan ke rentang [0, 1].",
+      "C": "Keduanya identik — perbedaannya hanya pada nama yang digunakan di dokumentasi Scikit-learn.",
+      "D": "StandardScaler hanya bisa digunakan pada data numerik; MinMaxScaler untuk data kategorik."
+    },
+    "answer": "B",
+    "explanation": "StandardScaler: nilai baru = (x - mean) / std → distribusi mendekati normal dengan mean=0, std=1. MinMaxScaler: nilai baru = (x - min) / (max - min) → semua nilai dalam rentang [0, 1]. StandardScaler lebih robust terhadap outlier."
+  },
+  {
+    "id": 37,
+    "question": "Apa itu Bias-Variance Tradeoff?",
+    "options": {
+      "A": "Keseimbangan antara jumlah data training dan data testing yang digunakan dalam cross-validation.",
+      "B": "Pertukaran antara kesederhanaan model (high bias = underfitting) dan sensitivitas terhadap data (high variance = overfitting).",
+      "C": "Keseimbangan antara kecepatan training dan akurasi model pada data baru.",
+      "D": "Hubungan antara nilai alpha regularisasi dan jumlah iterasi Gradient Descent."
+    },
+    "answer": "B",
+    "explanation": "Bias-Variance Tradeoff: model sederhana → high bias (error sistematis, underfitting). Model kompleks → high variance (terlalu sensitif terhadap data training, overfitting). Tujuan: temukan kompleksitas model yang optimal di tengah keduanya."
+  },
+  {
+    "id": 38,
+    "question": "Apa yang dimaksud dengan Data Leakage dalam machine learning?",
+    "options": {
+      "A": "Hilangnya data training akibat error teknis selama proses penyimpanan dataset.",
+      "B": "Informasi dari test set atau masa depan yang masuk ke proses training sehingga evaluasi tidak valid.",
+      "C": "Bocornya bobot model ke pihak ketiga yang tidak berwenang selama deployment.",
+      "D": "Kelebihan data kategorik yang menyebabkan model tidak bisa dilatih dengan baik."
+    },
+    "answer": "B",
+    "explanation": "Data Leakage terjadi saat informasi dari test set (atau data masa depan) 'bocor' ke proses training. Akibatnya: evaluasi performa tampak sangat baik di testing, tapi model gagal di dunia nyata. Contoh klasik: fit scaler pada seluruh dataset (termasuk test set) sebelum split."
+  },
+  {
+    "id": 39,
+    "question": "Apa tujuan dari Early Stopping dalam training model?",
+    "options": {
+      "A": "Menghentikan training saat learning rate mencapai nilai minimum yang ditentukan.",
+      "B": "Menghentikan training saat performa pada validation set mulai memburuk, untuk mencegah overfitting.",
+      "C": "Menghentikan Gradient Descent saat jumlah epoch melebihi batas yang ditetapkan secara kaku.",
+      "D": "Menghentikan proses GridSearchCV saat sudah menemukan satu kombinasi hyperparameter yang bagus."
+    },
+    "answer": "B",
+    "explanation": "Early Stopping memantau performa model pada validation set di setiap epoch. Saat performa validation mulai turun (model mulai overfitting), training dihentikan dan parameter terbaik disimpan. Ini adalah teknik regularisasi yang elegan tanpa mengubah kompleksitas model."
+  },
+  {
+    "id": 40,
+    "question": "Manakah pernyataan yang BENAR mengenai hubungan antara alpha dan regularisasi?",
+    "options": {
+      "A": "Alpha besar → regularisasi lemah → model lebih kompleks dan cenderung overfitting.",
+      "B": "Alpha kecil → regularisasi kuat → semua bobot didorong mendekati nol.",
+      "C": "Alpha besar → regularisasi kuat → bobot model ditekan, model lebih sederhana.",
+      "D": "Alpha tidak berpengaruh pada kekuatan regularisasi, hanya pada kecepatan konvergensi."
+    },
+    "answer": "C",
+    "explanation": "Alpha (α) adalah hyperparameter kekuatan regularisasi. Alpha besar → penalti besar → bobot model ditekan kuat → model lebih sederhana (risiko underfitting). Alpha kecil → penalti kecil → model lebih bebas → mirip model tanpa regularisasi (risiko overfitting). Pilih alpha optimal dengan GridSearchCV."
   }
 ]
